@@ -5,64 +5,83 @@ namespace ActionsUsageAnalyser.Domain.MeteredBillingReport;
 public class EnterpriseActionsUsageConsumptionReportAnalyzer : IReportAnalyzer
 {
     private readonly IReportReader<MeteredBillingReportItem> reportReader;
+    private readonly IOutputWriter outputWriter;
 
-    public EnterpriseActionsUsageConsumptionReportAnalyzer(IReportReader<MeteredBillingReportItem> reportReader)
+    public EnterpriseActionsUsageConsumptionReportAnalyzer(IReportReader<MeteredBillingReportItem> reportReader, IOutputWriter outputWriter)
     {
-        this.reportReader = reportReader;
+        this.reportReader = reportReader ?? throw new ArgumentNullException(nameof(reportReader));
+        this.outputWriter = outputWriter ?? throw new ArgumentNullException(nameof(outputWriter));
     }
+
     public async Task AnalyzeAsync(string dataFilePath)
     {
-        var pricePerSku = new Dictionary<string, (decimal multiplier, decimal price)>();
-        var enterprise = new Enterprise();
-        await foreach (var reportItem in reportReader.ReadFromSourceAsync(dataFilePath))
+        try
         {
-            if (reportItem.Product != "Actions") continue;
-            enterprise.ActionsConsumptionPerOwner.TryAdd(reportItem.Owner, new ActionsConsumption());
-            enterprise.ActionsConsumptionPerOwner[reportItem.Owner].MinutesPerSku.TryAdd(reportItem.SKU, 0);
-            enterprise.ActionsConsumptionPerOwner[reportItem.Owner].MinutesPerSku[reportItem.SKU] += reportItem.Quantity;
-            enterprise.ActionsConsumptionPerOwner[reportItem.Owner].PricePerRepository.TryAdd(reportItem.RepositorySlug, 0);
-            enterprise.ActionsConsumptionPerOwner[reportItem.Owner].PricePerRepository[reportItem.RepositorySlug] += reportItem.Quantity * reportItem.Multiplier * reportItem.PricePerUnit;
-
-            pricePerSku.TryAdd(reportItem.SKU, (reportItem.Multiplier, reportItem.PricePerUnit));
-        }
-
-
-        Console.WriteLine("Actions SKUs for this enterprise:");
-        foreach (var sku in pricePerSku)
-        {
-            Console.WriteLine($"{sku.Key} - {sku.Value.price.ToString("C", CultureInfo.GetCultureInfo("en-US"))} per minute, multiplier: {sku.Value.multiplier}");
-        }
-
-        Console.WriteLine($"{Environment.NewLine}Total number of organizations: {enterprise.ActionsConsumptionPerOwner.Count} {Environment.NewLine}");
-
-        var totalConsumptionForEnterprise = 0M;
-        foreach (var owner in enterprise.ActionsConsumptionPerOwner)
-        {
-            var totalPriceForThisOwner = 0M;
-            Console.WriteLine($"{Environment.NewLine}Owner: {owner.Key}");
-            Console.WriteLine($"{Environment.NewLine}Consumption per SKU:");
-            foreach (var sku in owner.Value.MinutesPerSku)
+            var pricePerSku = new Dictionary<string, (decimal multiplier, decimal price)>();
+            var enterprise = new Enterprise();
+            await foreach (var reportItem in reportReader.ReadFromSourceAsync(dataFilePath))
             {
-                var priceForThisSku = sku.Value * pricePerSku[sku.Key].price * pricePerSku[sku.Key].multiplier;
-                Console.WriteLine($"SKU: {sku.Key} - {sku.Value:N1} minutes, total price: {priceForThisSku.ToString("C", CultureInfo.GetCultureInfo("en-US"))}");
-                totalPriceForThisOwner += priceForThisSku;
+                if (reportItem.Product != "Actions") continue;
+                enterprise.ActionsConsumptionPerOwner.TryAdd(reportItem.Owner, new ActionsConsumption());
+                enterprise.ActionsConsumptionPerOwner[reportItem.Owner].MinutesPerSku.TryAdd(reportItem.SKU, 0);
+                enterprise.ActionsConsumptionPerOwner[reportItem.Owner].MinutesPerSku[reportItem.SKU] += reportItem.Quantity;
+                enterprise.ActionsConsumptionPerOwner[reportItem.Owner].PricePerRepository.TryAdd(reportItem.RepositorySlug, 0);
+                enterprise.ActionsConsumptionPerOwner[reportItem.Owner].PricePerRepository[reportItem.RepositorySlug] += reportItem.Quantity * reportItem.Multiplier * reportItem.PricePerUnit;
+
+                pricePerSku.TryAdd(reportItem.SKU, (reportItem.Multiplier, reportItem.PricePerUnit));
             }
 
+            outputWriter.WriteTitle(2, "Actions SKUs for this enterprise");
 
-            // print top 5 repositories by price
-            Console.WriteLine($"{Environment.NewLine}Top 3 repositories by consumption:");
-            foreach (var repository in owner.Value.PricePerRepository.OrderByDescending(x => x.Value).Take(3))
+            outputWriter.BeginTable("SKU", "Price per minute", "Multiplier");
+            foreach (var sku in pricePerSku)
             {
-                Console.WriteLine($"{repository.Key} : {repository.Value.ToString("C", CultureInfo.GetCultureInfo("en-US"))}");
+                outputWriter.WriteTableRow(sku.Key, sku.Value.price.ToString("C", CultureInfo.GetCultureInfo("en-US")), sku.Value.multiplier.ToString("N1"));
+            }
+            outputWriter.EndTable();
+
+            outputWriter.WriteLine($"Total number of organizations: {enterprise.ActionsConsumptionPerOwner.Count}");
+
+            outputWriter.WriteTitle(2, "Actions consumption per organization");
+
+            var totalConsumptionForEnterprise = 0M;
+            foreach (var owner in enterprise.ActionsConsumptionPerOwner)
+            {
+                var totalPriceForThisOwner = 0M;
+                outputWriter.WriteTitle(3, owner.Key);
+                outputWriter.WriteTitle(4, "Consumption per SKU");
+
+                outputWriter.BeginTable("SKU", "Minutes", "Total price");
+                foreach (var sku in owner.Value.MinutesPerSku)
+                {
+                    var priceForThisSku = sku.Value * pricePerSku[sku.Key].price * pricePerSku[sku.Key].multiplier;
+                    outputWriter.WriteTableRow(sku.Key, sku.Value.ToString("N1"), priceForThisSku.ToString("C", CultureInfo.GetCultureInfo("en-US")));
+                    totalPriceForThisOwner += priceForThisSku;
+                }
+                outputWriter.EndTable();
+
+
+                outputWriter.WriteLine($"Total cost for this organization: {totalPriceForThisOwner.ToString("C", CultureInfo.GetCultureInfo("en-US"))}");
+                totalConsumptionForEnterprise += totalPriceForThisOwner;
+
+                outputWriter.WriteTitle(4, "Top 3 repositories by consumption");
+                outputWriter.BeginTable("Repository", "Total price");
+                foreach (var repository in owner.Value.PricePerRepository.OrderByDescending(x => x.Value).Take(3))
+                {
+                    outputWriter.WriteTableRow(repository.Key, repository.Value.ToString("C", CultureInfo.GetCultureInfo("en-US")));
+                }
+                outputWriter.EndTable();
             }
 
-            Console.WriteLine($"{Environment.NewLine}------------------");
-
-            Console.WriteLine($"Total cost for this owner: {totalPriceForThisOwner.ToString("C", CultureInfo.GetCultureInfo("en-US"))}");
-            Console.WriteLine("======================================");
-            totalConsumptionForEnterprise += totalPriceForThisOwner;
+            outputWriter.WriteLine($"Total consumption for the enterprise: {totalConsumptionForEnterprise.ToString("C", CultureInfo.GetCultureInfo("en-US"))}");
         }
-
-        Console.WriteLine($"Total consumption for the enterprise: {totalConsumptionForEnterprise.ToString("C", CultureInfo.GetCultureInfo("en-US"))}");
+        catch (Exception e)
+        {
+            outputWriter.WriteLine($"Failed to process file {dataFilePath}: {e.Message}");
+        }
+        finally
+        {
+            outputWriter.Dispose();
+        }
     }
 }
