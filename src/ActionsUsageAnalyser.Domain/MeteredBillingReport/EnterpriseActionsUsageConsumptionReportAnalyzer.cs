@@ -4,11 +4,17 @@ namespace ActionsUsageAnalyser.Domain.MeteredBillingReport;
 
 public class EnterpriseActionsUsageConsumptionReportAnalyzer : IReportAnalyzer
 {
+    private readonly IReportReader<MeteredBillingReportItem> reportReader;
+
+    public EnterpriseActionsUsageConsumptionReportAnalyzer(IReportReader<MeteredBillingReportItem> reportReader)
+    {
+        this.reportReader = reportReader;
+    }
     public async Task AnalyzeAsync(string dataFilePath)
     {
         var pricePerSku = new Dictionary<string, (decimal multiplier, decimal price)>();
         var enterprise = new Enterprise();
-        await foreach (var reportItem in MeteredBillingReportReader.ReadFromFileAsync(dataFilePath))
+        await foreach (var reportItem in reportReader.ReadFromSourceAsync(dataFilePath))
         {
             if (reportItem.Product != "Actions") continue;
             enterprise.ActionsConsumptionPerOwner.TryAdd(reportItem.Owner, new ActionsConsumption());

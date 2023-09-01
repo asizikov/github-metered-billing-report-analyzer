@@ -3,7 +3,7 @@ using Shouldly;
 
 namespace ActionsUsageAnalyser.Domain.Tests.MeteredBillingReport;
 
-public class MeteredBillingReportItemTests
+public class MeteredBillingReportItemParserTests
 {
     [Fact]
     public void FromCsv_WhenCalledWithValidCsv_ReturnsMeteredBillingReportItem()
@@ -26,8 +26,9 @@ public class MeteredBillingReportItemTests
             Notes = string.Empty
         };
 
+        var parser = new MeteredBillingReportItemParser();
         // Act
-        var actualItem = MeteredBillingReportItem.FromCsv(csvLine.Split(","));
+        var actualItem = parser.Parse(csvLine.Split(","));
 
         // Assert
         actualItem.ShouldSatisfyAllConditions(
