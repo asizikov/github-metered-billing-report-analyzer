@@ -20,6 +20,12 @@ https://docs.github.com/en/enterprise-cloud@latest/billing/managing-billing-for-
 2. Under "Billing", click "Get usage report".
 3. Select the date range for the report and wait for the report to generate.
 
+## Test this tool
+
+```
+docker run -v $(pwd)/examples/input.csv:/input myimage --input input.csv
+```
+
 ## Report output example
 
 ```txt

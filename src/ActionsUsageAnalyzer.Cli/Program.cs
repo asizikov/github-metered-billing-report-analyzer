@@ -2,8 +2,8 @@
 using ActionsUsageAnalyzer.Cli.Infrastructure;
 using Microsoft.Extensions.Logging.Abstractions;
 
-var inputDirectory = @"/Users/asizikov/code/github/github-actions-usage-analyzer/data/";
-var outputDirectory = @"/Users/asizikov/code/github/github-actions-usage-analyzer/output/";
+var inputDirectory = @"/input";
+var outputDirectory = @"/output/";
 
 
 if (args.Contains("--help") || args.Contains("-h"))
