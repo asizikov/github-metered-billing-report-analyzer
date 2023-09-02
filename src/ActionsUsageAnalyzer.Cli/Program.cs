@@ -1,12 +1,40 @@
 ﻿using ActionsUsageAnalyser.Domain.MeteredBillingReport;
 using ActionsUsageAnalyzer.Cli.Infrastructure;
+using Microsoft.Extensions.Logging.Abstractions;
 
-var dataFilePath = @"/Users/asizikov/code/github/github-actions-usage-analyzer/data/august.csv";
+var inputDirectory = @"/Users/asizikov/code/github/github-actions-usage-analyzer/data/";
+var outputDirectory = @"/Users/asizikov/code/github/github-actions-usage-analyzer/output/";
 
-Console.WriteLine($"Report {Path.GetFileName(dataFilePath)}");
+
+if (args.Contains("--help") || args.Contains("-h"))
+{
+    Console.WriteLine("Usage: dotnet run AppName --input <input file name> [--output <output file name>]");
+    return;
+}
+
+if (!args.Contains("--input") && args.Length < 2)
+{
+    Console.WriteLine("Usage: dotnet run -- --input <input file name> [<output file>]");
+    return;
+}
+
+var inputIndex = Array.IndexOf<string>(args, "--input");
+var dataFileName = args[inputIndex + 1];
+var dataFilePath = Path.Combine(inputDirectory, dataFileName);
+
+if (!File.Exists(dataFilePath))
+{
+    Console.WriteLine("Input file does not exist");
+    return;
+}
+
+var outputFilePath = args.Length > inputIndex + 2 ? Path.Combine(outputDirectory, args[inputIndex + 2]) : null;
+
+Console.WriteLine($"Report {dataFileName}");
 
 var reportAnalyzer = new EnterpriseActionsUsageConsumptionReportAnalyzer(new MeteredBillingReportReader(new FileContentStreamer(), new MeteredBillingReportItemParser()), 
-    new ConsoleOutputWriter()
-    //new MarkdownDocumentOutputWriter(@"/Users/asizikov/code/github/github-actions-usage-analyzer/output/result.md")
+    new OutputProvider(outputFilePath),
+    NullLogger<EnterpriseActionsUsageConsumptionReportAnalyzer>.Instance
     );
+
 await reportAnalyzer.AnalyzeAsync(dataFilePath);

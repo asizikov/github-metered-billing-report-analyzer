@@ -1,16 +1,19 @@
 using System.Globalization;
+using Microsoft.Extensions.Logging;
 
 namespace ActionsUsageAnalyser.Domain.MeteredBillingReport;
 
 public class EnterpriseActionsUsageConsumptionReportAnalyzer : IReportAnalyzer
 {
     private readonly IReportReader<MeteredBillingReportItem> reportReader;
-    private readonly IOutputWriter outputWriter;
+    private readonly IOutputProvider outputProvider;
+    private readonly ILogger<EnterpriseActionsUsageConsumptionReportAnalyzer> logger;
 
-    public EnterpriseActionsUsageConsumptionReportAnalyzer(IReportReader<MeteredBillingReportItem> reportReader, IOutputWriter outputWriter)
+    public EnterpriseActionsUsageConsumptionReportAnalyzer(IReportReader<MeteredBillingReportItem> reportReader, IOutputProvider outputProvider, ILogger<EnterpriseActionsUsageConsumptionReportAnalyzer> logger)
     {
         this.reportReader = reportReader ?? throw new ArgumentNullException(nameof(reportReader));
-        this.outputWriter = outputWriter ?? throw new ArgumentNullException(nameof(outputWriter));
+        this.outputProvider = outputProvider ?? throw new ArgumentNullException(nameof(outputProvider));
+        this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
     }
 
     public async Task AnalyzeAsync(string dataFilePath)
@@ -30,6 +33,8 @@ public class EnterpriseActionsUsageConsumptionReportAnalyzer : IReportAnalyzer
 
                 pricePerSku.TryAdd(reportItem.SKU, (reportItem.Multiplier, reportItem.PricePerUnit));
             }
+
+            using var outputWriter = outputProvider.GetOutputWriter();
 
             outputWriter.WriteTitle(2, "Actions SKUs for this enterprise");
 
@@ -77,11 +82,7 @@ public class EnterpriseActionsUsageConsumptionReportAnalyzer : IReportAnalyzer
         }
         catch (Exception e)
         {
-            outputWriter.WriteLine($"Failed to process file {dataFilePath}: {e.Message}");
-        }
-        finally
-        {
-            outputWriter.Dispose();
+            logger.LogError(e, $"Failed to process file {dataFilePath}");
         }
     }
 }
