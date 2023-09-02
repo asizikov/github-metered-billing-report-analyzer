@@ -50,6 +50,16 @@ jobs:
 
       - name: 🔬 Test image
         run: |
-          docker run -v $(pwd)/examples:/input -v $(pwd)/ouput:/output analyzer:test --input input.csv  test.md
+          docker run -v $(pwd)/examples:/input -v $(pwd)/ouput:/output analyzer:test --input input.csv  test.
+          sudo chmod +r $(pwd)/ouput/test.md
+          ls -la $(pwd)/ouput
+          cat $(pwd)/ouput/test.md
+          diff $(pwd)/ouput/test.md examples/gold.md > $(pwd)/ouput/diff.txt        
+          # status=$?
+          # if [ $status -ne 0 ]; then
+          #   echo "Files are different"
+          #   cat output/diff.txt
+          #   exit 1
+          # fi
          
       
