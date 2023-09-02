@@ -1,18 +1,18 @@
 sep=,
 Date,Product,SKU,Quantity,Unit Type,Price Per Unit ($),Multiplier,Owner,Repository Slug,Username,Actions Workflow,Notes
-2023-08-01,Actions,Compute - UBUNTU,4719,minute,0.008,1.0,org-name-one,repo-001,username-001,.github/workflows/workflow-001.yml,
-2023-08-01,Actions,Compute - UBUNTU,148,minute,0.008,1.0,org-name-two,repo-002,username-002,.github/workflows/main.yml,
-2023-08-01,Actions,Compute - UBUNTU,1,minute,0.008,1.0,org-name-one,repo-003,username-003,.github/workflows/workflow-002.yml,
-2023-08-01,Actions,Compute - UBUNTU_4_CORE,1,minute,0.016,1.0,org-name-one,repo-004,username-004,.github/workflows/workflow-002.yml,
-2023-08-01,Actions,Compute - UBUNTU_4_CORE,1,minute,0.016,1.0,org-name-one,repo-005,username-004,.github/workflows/workflow-004.yml,
-2023-08-01,Actions,Compute - UBUNTU,1,minute,0.008,1.0,org-name-one,repo-006,username-008,.github/workflows/workflow-004.yml,
-2023-08-01,Actions,Compute - UBUNTU_4_CORE,1,minute,0.016,1.0,org-name-one,repo-007,username-004,.github/workflows/workflow-004.yml,
-2023-08-01,Actions,Compute - UBUNTU_4_CORE,1,minute,0.016,1.0,org-name-one,repo-005,username-004,.github/workflows/workflow-002.yml,
-2023-08-01,Actions,Compute - UBUNTU_4_CORE,1,minute,0.016,1.0,org-name-one,repo-006,username-004,.github/workflows/workflow-002.yml,
-2023-08-01,Actions,Compute - UBUNTU_4_CORE,1,minute,0.016,1.0,org-name-one,repo-009,username-004,.github/workflows/workflow-004.yml,
-2023-08-01,Actions,Compute - UBUNTU_4_CORE,1,minute,0.016,1.0,org-name-one,repo-001,username-004,.github/workflows/workflow-002.yml,
-2023-08-01,Actions,Compute - UBUNTU_4_CORE,1,minute,0.016,1.0,org-name-one,repo-002,username-004,.github/workflows/workflow-002.yml,
-2023-08-01,Actions,Compute - UBUNTU_4_CORE,1,minute,0.016,1.0,org-name-one,repo-003,username-003,.github/workflows/workflow-002.yml,
-2023-08-01,Actions,Compute - UBUNTU_4_CORE,1,minute,0.016,1.0,org-name-one,repo-004,username-003,.github/workflows/workflow-004.yml,
-2023-08-01,Actions,Compute - UBUNTU_4_CORE,1,minute,0.016,1.0,org-name-one,repo-005,username-004,.github/workflows/workflow-002.yml,
-2023-08-01,Actions,Compute - UBUNTU,269,minute,0.008,1.0,org-name-one,repo-001,username-001,.github/workflows/workflow-005.yml,
+2023-08-01,Actions,Compute - UBUNTU,4719,minute,0.008,1.0,org-name-one,repo-001,username-001,.github/workflows/workflow-001.yml,note-001
+2023-08-01,Actions,Compute - UBUNTU,148,minute,0.008,1.0,org-name-two,repo-002,username-002,.github/workflows/main.yml, note-001
+2023-08-01,Actions,Compute - UBUNTU,1,minute,0.008,1.0,org-name-one,repo-003,username-003,.github/workflows/workflow-002.yml, note-001
+2023-08-01,Actions,Compute - UBUNTU_4_CORE,1,minute,0.016,1.0,org-name-one,repo-004,username-004,.github/workflows/workflow-002.yml,note-001
+2023-08-01,Actions,Compute - UBUNTU_4_CORE,1,minute,0.016,1.0,org-name-one,repo-005,username-004,.github/workflows/workflow-004.yml,note-001
+2023-08-01,Actions,Compute - UBUNTU,1,minute,0.008,1.0,org-name-one,repo-006,username-008,.github/workflows/workflow-004.yml,note-001
+2023-08-01,Actions,Compute - UBUNTU_4_CORE,1,minute,0.016,1.0,org-name-one,repo-007,username-004,.github/workflows/workflow-004.yml,note-001
+2023-08-01,Actions,Compute - UBUNTU_4_CORE,1,minute,0.016,1.0,org-name-one,repo-005,username-004,.github/workflows/workflow-002.yml,note-002
+2023-08-01,Actions,Compute - UBUNTU_4_CORE,1,minute,0.016,1.0,org-name-one,repo-006,username-004,.github/workflows/workflow-002.yml,note-002
+2023-08-01,Actions,Compute - UBUNTU_4_CORE,1,minute,0.016,1.0,org-name-one,repo-009,username-004,.github/workflows/workflow-004.yml,note-001
+2023-08-01,Actions,Compute - UBUNTU_4_CORE,1,minute,0.016,1.0,org-name-one,repo-001,username-004,.github/workflows/workflow-002.yml,note-002
+2023-08-01,Actions,Compute - UBUNTU_4_CORE,1,minute,0.016,1.0,org-name-one,repo-002,username-004,.github/workflows/workflow-002.yml,note-002
+2023-08-01,Actions,Compute - UBUNTU_4_CORE,1,minute,0.016,1.0,org-name-one,repo-003,username-003,.github/workflows/workflow-002.yml,note-001
+2023-08-01,Actions,Compute - UBUNTU_4_CORE,1,minute,0.016,1.0,org-name-one,repo-004,username-003,.github/workflows/workflow-004.yml,note-002
+2023-08-01,Actions,Compute - UBUNTU_4_CORE,1,minute,0.016,1.0,org-name-one,repo-005,username-004,.github/workflows/workflow-002.yml,note-003
+2023-08-01,Actions,Compute - UBUNTU,269,minute,0.008,1.0,org-name-one,repo-001,username-001,.github/workflows/workflow-005.yml,note-001
