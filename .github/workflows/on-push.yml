@@ -6,13 +6,14 @@ on:
 
 jobs:
   build:
+    name: 🛠️ Build and Test 🔬
     runs-on: ubuntu-latest
 
     steps:
     - uses: actions/checkout@v3
 
-    - name: Build
+    - name: 🛠️ Build 
       run: dotnet build ActionsUsageAnalyzer.sln --configuration Release
 
-    - name: Test
+    - name: 🔬 Test
       run: dotnet test ActionsUsageAnalyzer.sln --configuration Release --no-build
