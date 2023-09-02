@@ -15,6 +15,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ActionsUsageAnalyser.Domain
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ActionsUsageAnalyzer.Cli", "src\ActionsUsageAnalyzer.Cli\ActionsUsageAnalyzer.Cli.csproj", "{9B8A15E7-E9E4-44D0-BCFA-469356082EED}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".github/workflows", ".github/workflows", "{CA6FCBF2-C9A1-4334-ABC0-8D8049CC5000}"
+	ProjectSection(SolutionItems) = preProject
+		.github\workflows\on-push.yml = .github\workflows\on-push.yml
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
