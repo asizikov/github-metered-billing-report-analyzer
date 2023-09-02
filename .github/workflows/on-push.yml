@@ -41,10 +41,15 @@ jobs:
         with:
           images: ghcr.io/${{ github.repository }}
 
-      - name: 🛠️ Build and push Docker image
+      - name: 🛠️ Build image
         uses: docker/build-push-action@v4
         with:
           context: .
-          push: true
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
+          load: true
+          tags: analyzer:test
+
+      - name: 🔬 Test image
+        run: |
+          docker run -v $(pwd)/examples:/input -v $(pwd)/ouput:/output analyzer:test --input input.csv  test.md
+         
+      
