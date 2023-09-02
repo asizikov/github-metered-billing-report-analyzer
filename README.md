@@ -23,10 +23,13 @@ https://docs.github.com/en/enterprise-cloud@latest/billing/managing-billing-for-
 ## Test this tool
 
 ```
-docker run -v $(pwd)/examples/input.csv:/input myimage --input input.csv
+docker run -v $(pwd)/examples:/input -v $(pwd)/ouput:/output analyzer --input input.csv  gold.md
 ```
 
 ## Report output example
+
+<details>
+<summary>Expand this secction to see this example</summary>
 
 ```txt
 
@@ -207,3 +210,5 @@ repo-93    | $644.03
 Total consumption for the enterprise: $37,111.80
 
 ```
+
+</details>
