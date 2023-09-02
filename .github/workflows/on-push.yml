@@ -1,0 +1,18 @@
+name: 🛠️ Build and Test
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Build
+      run: dotnet build ActionsUsageAnalyzer.sln --configuration Release
+
+    - name: Test
+      run: dotnet test ActionsUsageAnalyzer.sln --configuration Release --no-build
