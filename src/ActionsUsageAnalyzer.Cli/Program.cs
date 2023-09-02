@@ -1,10 +1,9 @@
 ﻿using ActionsUsageAnalyser.Domain.MeteredBillingReport;
-using ActionsUsageAnalyzer.Cli.Infrastructure;
+using ActionsUsageAnalyzer.Infrastructure;
 using Microsoft.Extensions.Logging.Abstractions;
 
-var inputDirectory = @"/input";
-var outputDirectory = @"/output/";
-
+var inputDirectory = Environment.GetEnvironmentVariable("INPUT_DIRECTORY") ?? @"/input/";
+var outputDirectory = Environment.GetEnvironmentVariable("OUTPUT_DIRECTORY") ?? @"/output/";
 
 if (args.Contains("--help") || args.Contains("-h"))
 {

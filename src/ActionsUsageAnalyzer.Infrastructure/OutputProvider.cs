@@ -1,6 +1,6 @@
 using ActionsUsageAnalyser.Domain;
 
-namespace ActionsUsageAnalyzer.Cli.Infrastructure;
+namespace ActionsUsageAnalyzer.Infrastructure;
 
 public class OutputProvider : IOutputProvider
 {

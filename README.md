@@ -29,117 +29,181 @@ docker run -v $(pwd)/examples/input.csv:/input myimage --input input.csv
 ## Report output example
 
 ```txt
-Actions SKUs for this enterprise:
-Compute - UBUNTU - $0.01 per minute, multiplier: 1,0
-Compute - UBUNTU_4_CORE - $0.02 per minute, multiplier: 1,0
-Compute - UBUNTU_16_CORE - $0.06 per minute, multiplier: 1,0
-Compute - WINDOWS - $0.02 per minute, multiplier: 2,0
-Compute - UBUNTU_8_CORE - $0.03 per minute, multiplier: 1,0
-Compute - WINDOWS_8_CORE - $0.06 per minute, multiplier: 2,0
-Compute - MACOS - $0.08 per minute, multiplier: 10,0
 
-Total number of organizations: 6 
+Actions SKUs for this enterprise
+================================
+
+SKU                      | Price per minute | Multiplier
+------------------------ | ---------------- | ----------
+Compute - UBUNTU         | $0.01            | 1,0       
+Compute - UBUNTU_4_CORE  | $0.02            | 1,0       
+Compute - UBUNTU_16_CORE | $0.06            | 1,0       
+Compute - WINDOWS        | $0.02            | 2,0       
+Compute - UBUNTU_8_CORE  | $0.03            | 1,0       
+Compute - WINDOWS_8_CORE | $0.06            | 2,0       
+Compute - MACOS          | $0.08            | 10,0      
 
 
-Owner: org-name-one
+Total number of organizations: 6
 
-Consumption per SKU:
-SKU: Compute - UBUNTU - 361.196,0 minutes, total price: $2,889.57
-SKU: Compute - UBUNTU_4_CORE - 13.908,0 minutes, total price: $222.53
-SKU: Compute - UBUNTU_16_CORE - 10,0 minutes, total price: $0.64
-SKU: Compute - WINDOWS - 21.672,0 minutes, total price: $693.50
-SKU: Compute - UBUNTU_8_CORE - 26.387,0 minutes, total price: $844.38
-SKU: Compute - WINDOWS_8_CORE - 2.101,0 minutes, total price: $268.93
-SKU: Compute - MACOS - 5.541,0 minutes, total price: $4,432.80
+Actions consumption per organization
+====================================
 
-Top 3 repositories by consumption:
-frontend-repo : $1,674.18
-frontend-repo-02 : $1,017.06
-frontend-repo-03 : $851.37
+owner-316
+---------
 
-------------------
-Total cost for this owner: $9,352.35
-======================================
+Consumption per SKU
+-------------------
 
-Owner: org-name-two
+SKU                      | Minutes   | Total price
+------------------------ | --------- | -----------
+Compute - UBUNTU         | 361.196,0 | $2,889.57  
+Compute - UBUNTU_4_CORE  | 13.908,0  | $222.53    
+Compute - UBUNTU_16_CORE | 10,0      | $0.64      
+Compute - WINDOWS        | 21.672,0  | $693.50    
+Compute - UBUNTU_8_CORE  | 26.387,0  | $844.38    
+Compute - WINDOWS_8_CORE | 2.101,0   | $268.93    
+Compute - MACOS          | 5.541,0   | $4,432.80  
 
-Consumption per SKU:
-SKU: Compute - UBUNTU - 148.831,0 minutes, total price: $1,190.65
-SKU: Compute - UBUNTU_8_CORE - 183,0 minutes, total price: $5.86
-SKU: Compute - MACOS - 576,0 minutes, total price: $460.80
 
-Top 3 repositories by consumption:
-frontend-repo-04 : $473.65
-frontend-repo-05 : $196.22
-frontend-repo-06 : $194.90
+Total cost for this organization: $9,352.35
 
-------------------
-Total cost for this owner: $1,657.30
-======================================
+Top 3 repositories by consumption
+---------------------------------
 
-Owner: org-name-three
+Repository | Total price
+---------- | -----------
+repo-76    | $1,674.18  
+repo-696   | $1,017.06  
+repo-782   | $851.37    
 
-Consumption per SKU:
-SKU: Compute - UBUNTU - 143.706,0 minutes, total price: $1,149.65
-SKU: Compute - WINDOWS - 11.198,0 minutes, total price: $358.34
-SKU: Compute - MACOS - 14.911,0 minutes, total price: $11,928.80
 
-Top 3 repositories by consumption:
-frontend-repo-07 : $11,988.06
-devops-repo-01 : $269.73
-python-repo-01 : $160.30
+owner-879
+---------
 
-------------------
-Total cost for this owner: $13,436.78
-======================================
+Consumption per SKU
+-------------------
 
-Owner: org-name-four
+SKU                     | Minutes   | Total price
+----------------------- | --------- | -----------
+Compute - UBUNTU        | 148.831,0 | $1,190.65  
+Compute - UBUNTU_8_CORE | 183,0     | $5.86      
+Compute - MACOS         | 576,0     | $460.80    
 
-Consumption per SKU:
-SKU: Compute - UBUNTU - 8.605,0 minutes, total price: $68.84
-SKU: Compute - WINDOWS - 2.301,0 minutes, total price: $73.63
-SKU: Compute - MACOS - 234,0 minutes, total price: $187.20
 
-Top 3 repositories by consumption:
-Retail-PIM-Test : $141.07
-devops-automation-01 : $73.63
-devops-automation-02 : $52.61
+Total cost for this organization: $1,657.30
 
-------------------
-Total cost for this owner: $329.67
-======================================
+Top 3 repositories by consumption
+---------------------------------
 
-Owner: org-name-five
+Repository | Total price
+---------- | -----------
+repo-93    | $473.65    
+repo-696   | $207.19    
+repo-670   | $196.22    
 
-Consumption per SKU:
-SKU: Compute - UBUNTU - 832,0 minutes, total price: $6.66
 
-Top 3 repositories by consumption:
-data-engeering-01 : $4.60
-devops-common-01 : $1.02
-backend-repo-02 : $0.58
+owner-88
+--------
 
-------------------
-Total cost for this owner: $6.66
-======================================
+Consumption per SKU
+-------------------
 
-Owner: org-name-six
+SKU               | Minutes   | Total price
+----------------- | --------- | -----------
+Compute - UBUNTU  | 143.706,0 | $1,149.65  
+Compute - WINDOWS | 11.198,0  | $358.34    
+Compute - MACOS   | 14.911,0  | $11,928.80 
 
-Consumption per SKU:
-SKU: Compute - UBUNTU - 545.347,0 minutes, total price: $4,362.78
-SKU: Compute - UBUNTU_4_CORE - 30.539,0 minutes, total price: $488.62
-SKU: Compute - WINDOWS - 34.900,0 minutes, total price: $1,116.80
-SKU: Compute - UBUNTU_8_CORE - 46.542,0 minutes, total price: $1,489.34
-SKU: Compute - WINDOWS_8_CORE - 3.396,0 minutes, total price: $434.69
-SKU: Compute - MACOS - 5.546,0 minutes, total price: $4,436.80
 
-Top 3 repositories by consumption:
-frontend-repo : $2,862.45
-frontend-repo-02 : $831.04
-website : $643.30
+Total cost for this organization: $13,436.78
 
-------------------
-Total cost for this owner: $12,329.03
-======================================
+Top 3 repositories by consumption
+---------------------------------
+
+Repository | Total price
+---------- | -----------
+repo-554   | $11,988.55 
+repo-376   | $271.70    
+repo-477   | $160.76    
+
+
+owner-659
+---------
+
+Consumption per SKU
+-------------------
+
+SKU               | Minutes | Total price
+----------------- | ------- | -----------
+Compute - UBUNTU  | 8.605,0 | $68.84     
+Compute - WINDOWS | 2.301,0 | $73.63     
+Compute - MACOS   | 234,0   | $187.20    
+
+
+Total cost for this organization: $329.67
+
+Top 3 repositories by consumption
+---------------------------------
+
+Repository | Total price
+---------- | -----------
+repo-102   | $141.07    
+repo-326   | $73.63     
+repo-140   | $52.61     
+
+
+owner-182
+---------
+
+Consumption per SKU
+-------------------
+
+SKU              | Minutes | Total price
+---------------- | ------- | -----------
+Compute - UBUNTU | 832,0   | $6.66      
+
+
+Total cost for this organization: $6.66
+
+Top 3 repositories by consumption
+---------------------------------
+
+Repository | Total price
+---------- | -----------
+repo-124   | $4.60      
+repo-401   | $1.02      
+repo-771   | $0.58      
+
+
+owner-303
+---------
+
+Consumption per SKU
+-------------------
+
+SKU                      | Minutes   | Total price
+------------------------ | --------- | -----------
+Compute - UBUNTU         | 545.347,0 | $4,362.78  
+Compute - UBUNTU_4_CORE  | 30.539,0  | $488.62    
+Compute - WINDOWS        | 34.900,0  | $1,116.80  
+Compute - UBUNTU_8_CORE  | 46.542,0  | $1,489.34  
+Compute - WINDOWS_8_CORE | 3.396,0   | $434.69    
+Compute - MACOS          | 5.546,0   | $4,436.80  
+
+
+Total cost for this organization: $12,329.03
+
+Top 3 repositories by consumption
+---------------------------------
+
+Repository | Total price
+---------- | -----------
+repo-76    | $2,862.45  
+repo-696   | $831.04    
+repo-93    | $644.03    
+
+
 Total consumption for the enterprise: $37,111.80
+
 ```

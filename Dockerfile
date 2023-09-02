@@ -13,7 +13,10 @@ RUN dotnet publish ./ActionsUsageAnalyzer.Cli/ActionsUsageAnalyzer.Cli.csproj -c
 RUN ls /app/out
 
 # Build runtime image
-FROM mcr.microsoft.com/dotnet/runtime:7.0
+FROM mcr.microsoft.com/dotnet/runtime:7.
+ENV INPUT_DIRECTORY=/input
+ENV OUTPUT_DIRECTORY=/output
+
 WORKDIR /app
 COPY --from=build-env /app/out ./
 ENTRYPOINT ["dotnet", "ActionsUsageAnalyzer.Cli.dll"]
