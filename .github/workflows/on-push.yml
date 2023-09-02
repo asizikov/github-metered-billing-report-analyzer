@@ -17,3 +17,13 @@ jobs:
 
     - name: 🔬 Test
       run: dotnet test ActionsUsageAnalyzer.sln --configuration Release --no-build
+
+  build-image:
+    name: 🛠️ Build and Push Docker Image 🐳
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: 🛠️ Build Image
+      run: docker build -t actions-usage-analyzer .

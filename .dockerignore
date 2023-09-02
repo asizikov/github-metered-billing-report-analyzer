@@ -1,0 +1,13 @@
+# Ignore files and directories commonly excluded from Docker images
+.dockerignore
+.git
+.gitignore
+.vscode
+.DS_Store
+
+# Ignore .md files
+*.md
+
+# Ignore .NET related files
+bin/
+obj/
