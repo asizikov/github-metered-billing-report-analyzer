@@ -20,6 +20,7 @@ public class MarkdownDocumentOutputWriter : IOutputWriter
     {
         writer.WriteLine();
         writer.WriteLine($"{new string('#', level)} {line}");
+        writer.WriteLine();
     }
 
     public void BeginTable(params string[] headers)
