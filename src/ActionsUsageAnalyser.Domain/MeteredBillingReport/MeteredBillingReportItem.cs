@@ -6,7 +6,7 @@ namespace ActionsUsageAnalyser.Domain.MeteredBillingReport;
 public class MeteredBillingReportItem
 {
     public DateTime Date { get; set; }
-    public string Product { get; set; } = string.Empty;
+    public Product Product { get; set; } = Product.Unknown;
     public string SKU { get; set; } = string.Empty;
     public decimal Quantity { get; set; }
     public string UnitType { get; set; } = string.Empty;

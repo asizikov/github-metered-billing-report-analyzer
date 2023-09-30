@@ -3,6 +3,10 @@
   &lt;TestAncestor&gt;
     &lt;TestId&gt;xUnit::792A66BE-D86C-4211-8175-3144A1744133::net7.0::ActionsUsageAnalyser.Domain.Tests.MeteredBillingReport.MeteredBillingReportReaderTests&lt;/TestId&gt;
     &lt;TestId&gt;xUnit::792A66BE-D86C-4211-8175-3144A1744133::net7.0::ActionsUsageAnalyser.Domain.Tests.MeteredBillingReport.MeteredBillingReportItemParserTests.FromCsv_WhenCalledWithValidCsv_ReturnsMeteredBillingReportItem&lt;/TestId&gt;
+    &lt;TestId&gt;xUnit::792A66BE-D86C-4211-8175-3144A1744133::net7.0::ActionsUsageAnalyser.Domain.Tests.MeteredBillingReport.MeteredBillingReportItemParserTests&lt;/TestId&gt;
+    &lt;TestId&gt;xUnit::792A66BE-D86C-4211-8175-3144A1744133::net7.0::ActionsUsageAnalyser.Domain.Tests.MeteredBillingReport.ActionsEntryDataProcessorTests&lt;/TestId&gt;
+    &lt;TestId&gt;xUnit::792A66BE-D86C-4211-8175-3144A1744133::net7.0::ActionsUsageAnalyser.Domain.Tests.MeteredBillingReport.CopilotEntryDataProcessorTests.ProcessForEnterprise_WhenItemIsCopilotProduct_ShouldAddToEnterprise&lt;/TestId&gt;
+    &lt;TestId&gt;xUnit::792A66BE-D86C-4211-8175-3144A1744133::net7.0::ActionsUsageAnalyser.Domain.Tests.MeteredBillingReport.CopilotEntryDataProcessorTests&lt;/TestId&gt;
   &lt;/TestAncestor&gt;
 &lt;/SessionState&gt;</s:String>
 	
