@@ -13,7 +13,7 @@ public class MeteredBillingReportItemParserTests
         var expectedItem = new MeteredBillingReportItem
         {
             Date = new DateTime(2023, 8, 1),
-            Product = "Actions",
+            Product = Product.Actions,
             SKU = "Compute - UBUNTU",
             Quantity = 4719,
             UnitType = "minute",
@@ -31,6 +31,46 @@ public class MeteredBillingReportItemParserTests
         var actualItem = parser.Parse(csvLine.Split(","));
 
         // Assert
+        actualItem.ShouldSatisfyAllConditions(
+            () => actualItem.Date.ShouldBe(expectedItem.Date),
+            () => actualItem.Product.ShouldBe(expectedItem.Product),
+            () => actualItem.SKU.ShouldBe(expectedItem.SKU),
+            () => actualItem.Quantity.ShouldBe(expectedItem.Quantity),
+            () => actualItem.UnitType.ShouldBe(expectedItem.UnitType),
+            () => actualItem.PricePerUnit.ShouldBe(expectedItem.PricePerUnit),
+            () => actualItem.Multiplier.ShouldBe(expectedItem.Multiplier),
+            () => actualItem.Owner.ShouldBe(expectedItem.Owner),
+            () => actualItem.RepositorySlug.ShouldBe(expectedItem.RepositorySlug),
+            () => actualItem.Username.ShouldBe(expectedItem.Username),
+            () => actualItem.ActionsWorkflow.ShouldBe(expectedItem.ActionsWorkflow),
+            () => actualItem.Notes.ShouldBe(expectedItem.Notes)
+        );
+    }
+
+    [Fact]
+    public void FromCsv_WhenCalledWith_CopilotProductConsumption_Returns_MeteredBillingReportItem()
+    {
+        var csvLine = "2023-08-02,Copilot,Copilot for Business,0.1613,user-month,19.0,1.0,org-name-three,,,,";
+        var expectedItem = new MeteredBillingReportItem
+        {
+            Date = new DateTime(2023, 8, 2),
+            Product = Product.Copilot,
+            SKU = "Copilot for Business",
+            Quantity = 0.1613m,
+            UnitType = "user-month",
+            PricePerUnit = 19.0m,
+            Multiplier = 1.0m,
+            Owner = "org-name-three",
+            RepositorySlug = string.Empty,
+            Username = string.Empty,
+            ActionsWorkflow = string.Empty,
+            Notes = string.Empty
+        };
+        
+        var parser = new MeteredBillingReportItemParser();
+        
+        var actualItem = parser.Parse(csvLine.Split(","));
+        
         actualItem.ShouldSatisfyAllConditions(
             () => actualItem.Date.ShouldBe(expectedItem.Date),
             () => actualItem.Product.ShouldBe(expectedItem.Product),

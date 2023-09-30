@@ -62,6 +62,7 @@ jobs:
 
       - name: 🐳 Push image
         uses: docker/build-push-action@v4
+        if: github.ref == 'refs/heads/main'
         with:
           context: .
           push: true
