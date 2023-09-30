@@ -8,12 +8,20 @@ public class EnterpriseActionsUsageConsumptionReportAnalyzer : IReportAnalyzer
     private readonly IReportReader<MeteredBillingReportItem> reportReader;
     private readonly IOutputProvider outputProvider;
     private readonly ILogger<EnterpriseActionsUsageConsumptionReportAnalyzer> logger;
+    private readonly Configuration configuration;
+    
+    private readonly Dictionary<Product, IReportEntryDataProcessor> dataProcessors = new()
+    {
+        { Product.Actions, new ActionsEntryDataProcessor() },
+        { Product.Copilot, new CopilotEntryDataProcessor() }
+    };
 
-    public EnterpriseActionsUsageConsumptionReportAnalyzer(IReportReader<MeteredBillingReportItem> reportReader, IOutputProvider outputProvider, ILogger<EnterpriseActionsUsageConsumptionReportAnalyzer> logger)
+    public EnterpriseActionsUsageConsumptionReportAnalyzer(IReportReader<MeteredBillingReportItem> reportReader, IOutputProvider outputProvider, ILogger<EnterpriseActionsUsageConsumptionReportAnalyzer> logger, Configuration configuration)
     {
         this.reportReader = reportReader ?? throw new ArgumentNullException(nameof(reportReader));
         this.outputProvider = outputProvider ?? throw new ArgumentNullException(nameof(outputProvider));
         this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
+        this.configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
     }
 
     public async Task AnalyzeAsync(string dataFilePath)
@@ -24,13 +32,13 @@ public class EnterpriseActionsUsageConsumptionReportAnalyzer : IReportAnalyzer
             var enterprise = new Enterprise();
             await foreach (var reportItem in reportReader.ReadFromSourceAsync(dataFilePath))
             {
-                if (reportItem.Product != "Actions") continue;
-                enterprise.ActionsConsumptionPerOwner.TryAdd(reportItem.Owner, new ActionsConsumption());
-                enterprise.ActionsConsumptionPerOwner[reportItem.Owner].MinutesPerSku.TryAdd(reportItem.SKU, 0);
-                enterprise.ActionsConsumptionPerOwner[reportItem.Owner].MinutesPerSku[reportItem.SKU] += reportItem.Quantity;
-                enterprise.ActionsConsumptionPerOwner[reportItem.Owner].PricePerRepository.TryAdd(reportItem.RepositorySlug, 0);
-                enterprise.ActionsConsumptionPerOwner[reportItem.Owner].PricePerRepository[reportItem.RepositorySlug] += reportItem.Quantity * reportItem.Multiplier * reportItem.PricePerUnit;
-
+                if (!dataProcessors.ContainsKey(reportItem.Product)) continue;
+                dataProcessors[reportItem.Product].ProcessForEnterprise(enterprise, reportItem);
+                
+                if (configuration.ShouldAddCopilotDataToReport && reportItem.Product == Product.Copilot)
+                {
+                    continue;
+                }
                 pricePerSku.TryAdd(reportItem.SKU, (reportItem.Multiplier, reportItem.PricePerUnit));
             }
 
@@ -85,4 +93,9 @@ public class EnterpriseActionsUsageConsumptionReportAnalyzer : IReportAnalyzer
             logger.LogError(e, $"Failed to process file {dataFilePath}");
         }
     }
+}
+
+public class Configuration
+{
+    public bool ShouldAddCopilotDataToReport = false;
 }
