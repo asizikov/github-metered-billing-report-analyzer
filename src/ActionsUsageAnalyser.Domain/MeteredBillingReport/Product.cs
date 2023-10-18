@@ -6,4 +6,5 @@ public enum Product
     Actions,
     SharedStorage,
     Copilot,
+    Packages
 }
