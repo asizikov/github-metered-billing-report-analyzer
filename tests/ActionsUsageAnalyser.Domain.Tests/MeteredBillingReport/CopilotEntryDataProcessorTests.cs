@@ -75,7 +75,7 @@ public class CopilotEntryDataProcessorTests
                 Owner = "owner",
                 SKU = "Copilot for Business",
                 Quantity = 0.23m,
-                Multiplier = 1,
+                Multiplier = 2,
                 PricePerUnit = 19.0m
             }
         };
@@ -87,7 +87,7 @@ public class CopilotEntryDataProcessorTests
         
         enterprise.ShouldSatisfyAllConditions(
             () => enterprise.CopilotConsumptionPerOwner.ShouldContainKey(items[0].Owner),
-            () => enterprise.CopilotConsumptionPerOwner[items[0].Owner].AccumulatedPrise.ShouldBe(items.Sum(i => i.Quantity * i.Multiplier * i.PricePerUnit))
+            () => enterprise.CopilotConsumptionPerOwner[items[0].Owner].AccumulatedPrise.ShouldBe(items.Sum(i => i.Quantity * i.PricePerUnit))
         );
     }
 }

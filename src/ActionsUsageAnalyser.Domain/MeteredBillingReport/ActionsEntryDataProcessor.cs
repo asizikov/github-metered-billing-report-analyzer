@@ -10,6 +10,6 @@ public class ActionsEntryDataProcessor : IReportEntryDataProcessor
         enterprise.ActionsConsumptionPerOwner[item.Owner].MinutesPerSku.TryAdd(item.SKU, 0);
         enterprise.ActionsConsumptionPerOwner[item.Owner].MinutesPerSku[item.SKU] += item.Quantity;
         enterprise.ActionsConsumptionPerOwner[item.Owner].PricePerRepository.TryAdd(item.RepositorySlug, 0);
-        enterprise.ActionsConsumptionPerOwner[item.Owner].PricePerRepository[item.RepositorySlug] += item.Quantity * item.Multiplier * item.PricePerUnit;
+        enterprise.ActionsConsumptionPerOwner[item.Owner].PricePerRepository[item.RepositorySlug] += item.Quantity * item.PricePerUnit;
     }
 }

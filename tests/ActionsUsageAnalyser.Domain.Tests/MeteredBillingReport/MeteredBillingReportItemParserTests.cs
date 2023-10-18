@@ -86,4 +86,20 @@ public class MeteredBillingReportItemParserTests
             () => actualItem.Notes.ShouldBe(expectedItem.Notes)
         );
     }
+    
+    [Theory]
+    [InlineData("Packages", Product.Packages)]
+    [InlineData("Actions", Product.Actions)]
+    [InlineData("Copilot", Product.Copilot)]
+    [InlineData("Shared Storage", Product.SharedStorage)]
+    [InlineData("zzzz", Product.Unknown)]
+    public void ProductType_Converted_As_Expected(string productType, Product expectedProduct)
+    {
+        var csvLine = $"2023-08-02,{productType},Copilot for Business,0.1613,user-month,19.0,1.0,org-name-three,,,,";
+        var parser = new MeteredBillingReportItemParser();
+        
+        var actualItem = parser.Parse(csvLine.Split(","));
+        
+        actualItem.Product.ShouldBe(expectedProduct);
+    }
 }
