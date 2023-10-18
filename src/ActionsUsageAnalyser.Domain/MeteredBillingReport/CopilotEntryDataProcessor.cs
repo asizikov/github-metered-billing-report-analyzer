@@ -7,7 +7,7 @@ public class CopilotEntryDataProcessor : IReportEntryDataProcessor
         if (item.Product is not Product.Copilot) return;
 
         var owner = item.Owner;
-        var price = item.PricePerUnit * item.Quantity * item.Multiplier;
+        var price = item.PricePerUnit * item.Quantity;
 
         enterprise.CopilotConsumptionPerOwner.TryAdd(owner, new());
 

@@ -97,13 +97,13 @@ public class ActionsEntryDataProcessorTests
         foreach (var sku in items.GroupBy(i => i.SKU))
         {
             enterprise.ActionsConsumptionPerOwner["owner"].MinutesPerSku.ShouldContainKey(sku.Key);
-            enterprise.ActionsConsumptionPerOwner["owner"].MinutesPerSku[sku.Key].ShouldBe(sku.Sum(i => i.Quantity));    
+            enterprise.ActionsConsumptionPerOwner["owner"].MinutesPerSku[sku.Key].ShouldBe(sku.Sum(i => i.Quantity));
         }
 
         foreach (var group in items.GroupBy(i => i.RepositorySlug))
         {
             enterprise.ActionsConsumptionPerOwner["owner"].PricePerRepository.ShouldContainKey(group.Key);
-            enterprise.ActionsConsumptionPerOwner["owner"].PricePerRepository[group.Key].ShouldBe(group.Sum(i => i.Quantity * i.Multiplier * i.PricePerUnit));
+            enterprise.ActionsConsumptionPerOwner["owner"].PricePerRepository[group.Key].ShouldBe(group.Sum(i => i.Quantity * i.PricePerUnit));
         }
     }
 }
