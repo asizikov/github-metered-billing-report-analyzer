@@ -1,14 +1,18 @@
-# Repository Name
+# GitHub Actions Usage Analyzer
 
-This repository contains [description of what the repository is for].
+This console application parses a GitHub Metered Billing report and provides a summary of the usage of GitHub Actions across your organizations. The summary includes the total number of minutes used, the number of minutes used per repository, and the total cost of GitHub Actions for each organization.
+
+## Installation
+
+To use this application, you need to have [.NET](https://dotnet.microsoft.com/download) and optinally Docker installed on your machine. 
 
 ## Usage
 
 To use this repository, follow these steps:
 
 1. Clone the repository to your local machine.
-2. [Add any additional steps for setting up the repository, if necessary.]
-3. [Add any additional steps for running the code or using the repository, if necessary.]
+2. `dotnet build`
+3. `dotnet test`
 
 ## Viewing Your GitHub Actions Usage
 
@@ -20,10 +24,18 @@ https://docs.github.com/en/enterprise-cloud@latest/billing/managing-billing-for-
 2. Under "Billing", click "Get usage report".
 3. Select the date range for the report and wait for the report to generate.
 
+Once you have the report, you can run the application using the following command:
+
+```bash
+docker run -b $(pwd)/path-to-your-report:/input -v $(pwd)/output:/output analyzer --input your-usage-report.csv
+```
+
+The application will parse the report and provide a summary of the usage of GitHub Actions in your organization.
+
 ## Test this tool
 
-```
-docker run -v $(pwd)/examples:/input -v $(pwd)/ouput:/output analyzer --input input.csv  gold.md
+```bash
+docker run -v $(pwd)/examples:/input -v $(pwd)/output:/output analyzer --input input.csv  gold.md
 ```
 
 ## Report output example
@@ -212,3 +224,14 @@ Total consumption for the enterprise: $37,111.80
 ```
 
 </details>
+
+
+
+
+## Contributing
+
+If you find a bug or have a feature request, please [open an issue](https://github.com/your-username/github-actions-usage-analyzer/issues/new). Pull requests are also welcome!
+
+## License
+
+This project is licensed under the [MIT License](LICENSE).
