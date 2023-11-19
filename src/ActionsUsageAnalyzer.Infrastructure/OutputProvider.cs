@@ -17,6 +17,13 @@ public class OutputProvider : IOutputProvider
         {
             return new ConsoleOutputWriter();
         }
-        return new MarkdownDocumentOutputWriter(filePath);
+        else if (filePath.EndsWith(".html", StringComparison.OrdinalIgnoreCase))
+        {
+            return new HtmlOutputWriter(filePath);
+        }
+        else
+        {
+            return new MarkdownDocumentOutputWriter(filePath);
+        }
     }
 }
