@@ -1,10 +1,8 @@
 using System.IO;
 using ActionsUsageAnalyser.Domain;
 
-
-
-namespace ActionsUsageAnalyzer.Infrastructure;
-
+namespace ActionsUsageAnalyzer.Infrastructure
+{
     public class HtmlOutputWriter : IOutputWriter
     {
         private readonly TextWriter writer;
@@ -13,6 +11,12 @@ namespace ActionsUsageAnalyzer.Infrastructure;
         {
             writer = File.CreateText(filePath);
             writer.WriteLine("<html>");
+            writer.WriteLine("<head>");
+            writer.WriteLine("<style>");
+            writer.WriteLine("body { background-color: red; }");
+            writer.WriteLine("h1, h2, h3, h4, h5, h6 { color: green; }");
+            writer.WriteLine("</style>");
+            writer.WriteLine("</head>");
             writer.WriteLine("<body>");
         }
 
@@ -60,3 +64,4 @@ namespace ActionsUsageAnalyzer.Infrastructure;
             writer.Dispose();
         }
     }
+}
