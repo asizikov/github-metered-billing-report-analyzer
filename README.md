@@ -230,7 +230,7 @@ Total consumption for the enterprise: $37,111.80
 
 ## Contributing
 
-If you find a bug or have a feature request, please [open an issue](https://github.com/your-username/github-actions-usage-analyzer/issues/new). Pull requests are also welcome!
+If you find a bug or have a feature request, please [open an issue](https://github.com/asizikov/github-actions-usage-analyzer/issues/new). Pull requests are also welcome!
 
 ## License
 
