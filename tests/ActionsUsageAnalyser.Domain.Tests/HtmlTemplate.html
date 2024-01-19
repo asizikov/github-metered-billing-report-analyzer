@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Report Summary</title>
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        th, td {
+            border: 1px solid black;
+            padding: 10px;
+            text-align: left;
+        }
+
+        h1, h2, h3, h4 {
+            margin: 10px 0;
+        }
+
+        p {
+            margin: 5px 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>Report Summary</h1>
+    <p>This is a sample report summary.</p>
+    <h2>Actions SKUs for this enterprise</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>SKU</th>
+                <th>Price per minute</th>
+                <th>Multiplier</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>actions-minutes-1000</td>
+                <td>$0.08</td>
+                <td>1.0</td>
+            </tr>
+            <tr>
+                <td>actions-minutes-5000</td>
+                <td>$0.08</td>
+                <td>0.8</td>
+            </tr>
+            <tr>
+                <td>actions-minutes-10000</td>
+                <td>$0.08</td>
+                <td>0.7</td>
+            </tr>
+        </tbody>
+    </table>
+    <p>Total number of organizations: 3</p>
+    <h2>Actions consumption per organization</h2>
+    <h3>owner-1</h3>
+    <h4>Consumption per SKU</h4>
+    <table>
+        <thead>
+            <tr>
+                <th>SKU</th>
+                <th>Minutes</th>
+                <th>Total price</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>actions-minutes-1000</td>
+                <td>500</td>
+                <td>$40.00</td>
+            </tr>
+            <tr>
+                <td>actions-minutes-5000</td>
+                <td>1000</td>
+                <td>$64.00</td>
+            </tr>
+        </tbody>
+    </table>
+    <p>Total cost for this organization: $104.00</p>
+    <h4>Top 3 repositories by consumption</h4>
+    <table>
+        <thead>
+            <tr>
+                <th>Repository</th>
+                <th>Total price</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>repo-1</td>
+                <td>$50.00</td>
+            </tr>
+            <tr>
+                <td>repo-2</td>
+                <td>$30.00</td>
+            </tr>
+            <tr>
+                <td>repo-3</td>
+                <td>$24.00</td>
+            </tr>
+        </tbody>
+    </table>
+    <!-- more report summary as needed -->
+</body>
+</html>
