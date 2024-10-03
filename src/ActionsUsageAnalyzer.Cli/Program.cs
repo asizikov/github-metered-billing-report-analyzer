@@ -33,8 +33,9 @@ Console.WriteLine($"Report {dataFileName}");
 
 var reportAnalyzer = new EnterpriseActionsUsageConsumptionReportAnalyzer(new MeteredBillingReportReader(new FileContentStreamer(), new MeteredBillingReportItemParser()), 
     new OutputProvider(outputFilePath),
-    NullLogger<EnterpriseActionsUsageConsumptionReportAnalyzer>.Instance,
-    new Configuration()
+    NullLogger<EnterpriseActionsUsageConsumptionReportAnalyzer>.Instance
     );
 
 await reportAnalyzer.AnalyzeAsync(dataFilePath);
+
+Console.WriteLine($"Output created {outputFilePath}");

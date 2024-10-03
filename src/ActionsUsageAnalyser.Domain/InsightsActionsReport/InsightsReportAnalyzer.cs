@@ -35,7 +35,7 @@ public class InsightsReportAnalyzer
             workflows.TryAdd(currentMonthReport.WorkflowName, (0, 0));
             workflows[currentMonthReport.WorkflowName] = (
                 workflows[currentMonthReport.WorkflowName].actual + currentMonthReport.Quantity,
-                workflows[currentMonthReport.WorkflowName].billed + currentMonthReport.Quantity * currentMonthReport.Multiplier
+                workflows[currentMonthReport.WorkflowName].billed + currentMonthReport.Quantity
             );
         }
 

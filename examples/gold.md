@@ -1,10 +1,10 @@
 
-## Actions SKUs for this enterprise
+## Metered SKUs for this enterprise
 
-| SKU | Price per minute | Multiplier |
-| --- | --- | --- |
-| Compute - UBUNTU | $0.01 | 1.0 |
-| Compute - UBUNTU_4_CORE | $0.02 | 1.0 |
+| SKU | Unit | Price per unit | Multiplier |
+| --- | --- | --- | --- |
+| Compute - UBUNTU | minute | $0.01 | 1,0 |
+| Compute - UBUNTU_4_CORE | minute | $0.02 | 1,0 |
 
 Total number of organizations: 4
 
@@ -18,8 +18,8 @@ Total number of organizations: 4
 
 | SKU | Minutes | Total price |
 | --- | --- | --- |
-| Compute - UBUNTU | 5,058.0 | $40.46 |
-| Compute - UBUNTU_4_CORE | 25.0 | $0.40 |
+| Compute - UBUNTU | 5.058,0 | $40.46 |
+| Compute - UBUNTU_4_CORE | 25,0 | $0.40 |
 
 Total cost for this organization: $40.86
 
@@ -39,7 +39,7 @@ Total cost for this organization: $40.86
 
 | SKU | Minutes | Total price |
 | --- | --- | --- |
-| Compute - UBUNTU | 148.0 | $1.18 |
+| Compute - UBUNTU | 148,0 | $1.18 |
 
 Total cost for this organization: $1.18
 
@@ -57,7 +57,7 @@ Total cost for this organization: $1.18
 
 | SKU | Minutes | Total price |
 | --- | --- | --- |
-| Compute - UBUNTU | 14.0 | $0.11 |
+| Compute - UBUNTU | 14,0 | $0.11 |
 
 Total cost for this organization: $0.11
 
@@ -77,7 +77,7 @@ Total cost for this organization: $0.11
 
 | SKU | Minutes | Total price |
 | --- | --- | --- |
-| Compute - UBUNTU | 1.0 | $0.01 |
+| Compute - UBUNTU | 1,0 | $0.01 |
 
 Total cost for this organization: $0.01
 
@@ -88,3 +88,15 @@ Total cost for this organization: $0.01
 | repo-818 | $0.01 |
 
 Total consumption for the enterprise: $42.17
+
+## Shared storage consumption per organization
+
+Total storage consumption for the enterprise: $0.00
+
+## Copilot consumption per organization
+
+Total copilot consumption for the enterprise: $0.00
+
+## Packages consumption per organization
+
+Total packages consumption for the enterprise: $0.00

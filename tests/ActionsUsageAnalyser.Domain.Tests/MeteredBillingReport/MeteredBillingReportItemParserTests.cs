@@ -86,6 +86,42 @@ public class MeteredBillingReportItemParserTests
             () => actualItem.Notes.ShouldBe(expectedItem.Notes)
         );
     }
+
+    [Fact]
+    public void FromCsv_WhenCalledWith_StorageProductConsumption_Returns_MeteredBillingReportItem()
+    {
+        var csvLine = "2024-09-15,Shared Storage,Shared Storage,0.0,gb-day,0.008,1.0,enterprise-name,repo-name-two,,,";
+        var expectedItem = new MeteredBillingReportItem
+        {
+            Date = new DateTime(2024, 09, 15),
+            Product = Product.SharedStorage,
+            SKU = "Shared Storage",
+            Quantity = 0.0m,
+            UnitType = "gb-day",
+            PricePerUnit = 0.008m,
+            Multiplier = 1.0m,
+            Owner = "enterprise-name",
+            RepositorySlug = "repo-name-two",
+        };
+        
+        var parser = new MeteredBillingReportItemParser();
+        
+        var actualItem = parser.Parse(csvLine.Split(","));
+        actualItem.ShouldSatisfyAllConditions(
+            () => actualItem.Date.ShouldBe(expectedItem.Date),
+            () => actualItem.Product.ShouldBe(expectedItem.Product),
+            () => actualItem.SKU.ShouldBe(expectedItem.SKU),
+            () => actualItem.Quantity.ShouldBe(expectedItem.Quantity),
+            () => actualItem.UnitType.ShouldBe(expectedItem.UnitType),
+            () => actualItem.PricePerUnit.ShouldBe(expectedItem.PricePerUnit),
+            () => actualItem.Multiplier.ShouldBe(expectedItem.Multiplier),
+            () => actualItem.Owner.ShouldBe(expectedItem.Owner),
+            () => actualItem.RepositorySlug.ShouldBe(expectedItem.RepositorySlug),
+            () => actualItem.Username.ShouldBe(expectedItem.Username),
+            () => actualItem.ActionsWorkflow.ShouldBe(expectedItem.ActionsWorkflow),
+            () => actualItem.Notes.ShouldBe(expectedItem.Notes)
+        );
+    }
     
     [Theory]
     [InlineData("Packages", Product.Packages)]

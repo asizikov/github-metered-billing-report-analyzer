@@ -12,6 +12,6 @@ public class CopilotEntryDataProcessor : IReportEntryDataProcessor
         enterprise.CopilotConsumptionPerOwner.TryAdd(owner, new());
 
         var copilotConsumption = enterprise.CopilotConsumptionPerOwner[owner];
-        copilotConsumption.AccumulatedPrise += price;
+        copilotConsumption.AccumulatedCost += price;
     }
 }

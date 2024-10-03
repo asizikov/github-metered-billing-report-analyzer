@@ -40,7 +40,7 @@ public class CopilotEntryDataProcessorTests
         
         enterprise.ShouldSatisfyAllConditions(
             () => enterprise.CopilotConsumptionPerOwner.ShouldContainKey(item.Owner),
-            () => enterprise.CopilotConsumptionPerOwner[item.Owner].AccumulatedPrise.ShouldBe(item.Quantity * item.Multiplier * item.PricePerUnit)
+            () => enterprise.CopilotConsumptionPerOwner[item.Owner].AccumulatedCost.ShouldBe(item.Quantity * item.Multiplier * item.PricePerUnit)
         );
     }
 
@@ -87,7 +87,7 @@ public class CopilotEntryDataProcessorTests
         
         enterprise.ShouldSatisfyAllConditions(
             () => enterprise.CopilotConsumptionPerOwner.ShouldContainKey(items[0].Owner),
-            () => enterprise.CopilotConsumptionPerOwner[items[0].Owner].AccumulatedPrise.ShouldBe(items.Sum(i => i.Quantity * i.PricePerUnit))
+            () => enterprise.CopilotConsumptionPerOwner[items[0].Owner].AccumulatedCost.ShouldBe(items.Sum(i => i.Quantity * i.PricePerUnit))
         );
     }
 }
