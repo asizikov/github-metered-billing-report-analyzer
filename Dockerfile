@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build-env
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build-env
 WORKDIR /app
 
 # Copy csproj and restore as distinct layers
@@ -14,7 +14,7 @@ COPY src/ActionsUsageAnalyzer.Cli ./ActionsUsageAnalyzer.Cli/
 RUN dotnet publish ./ActionsUsageAnalyzer.Cli/ActionsUsageAnalyzer.Cli.csproj -c Release -o out
 
 # Build runtime image
-FROM mcr.microsoft.com/dotnet/runtime:7.0
+FROM mcr.microsoft.com/dotnet/runtime:8.0
 ENV INPUT_DIRECTORY=/input
 ENV OUTPUT_DIRECTORY=/output
 
