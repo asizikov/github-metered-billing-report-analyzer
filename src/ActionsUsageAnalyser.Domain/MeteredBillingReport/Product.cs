@@ -6,5 +6,6 @@ public enum Product
     Actions,
     SharedStorage,
     Copilot,
-    Packages
+    Packages,
+    CodespacesLinux,
 }

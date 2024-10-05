@@ -122,12 +122,54 @@ public class MeteredBillingReportItemParserTests
             () => actualItem.Notes.ShouldBe(expectedItem.Notes)
         );
     }
+
+    [Theory]
+    [InlineData("Prebuild storage", "gb-month", "Create Codespaces Prebuilds")]
+    [InlineData("Storage", "gb-month", "")]
+    [InlineData("Compute - 2 core", "hour","" )]
+    public void FromCsv_WhenCalledWith_CodespacesProductConsumption_Returns_MeteredBillingReportItem(string sku, string unit, string workflow)
+    {
+        var csvLine = $"2024-09-25,Codespaces - Linux,{sku},5.2512,{unit},0.07,1.0,enterprise-name,repo-name-two,,{workflow},";
+        var expectedItem = new MeteredBillingReportItem
+        {
+            Date = new DateTime(2024, 09, 25),
+            Product = Product.CodespacesLinux,
+            SKU = sku,
+            Quantity = 5.2512m,
+            UnitType = unit,
+            PricePerUnit = 0.07m,
+            Multiplier = 1.0m,
+            Owner = "enterprise-name",
+            RepositorySlug = "repo-name-two",
+            ActionsWorkflow = workflow
+        };
+        
+        var parser = new MeteredBillingReportItemParser();
+        
+        var actualItem = parser.Parse(csvLine.Split(","));
+        actualItem.ShouldSatisfyAllConditions(
+            () => actualItem.Date.ShouldBe(expectedItem.Date),
+            () => actualItem.Product.ShouldBe(expectedItem.Product),
+            () => actualItem.SKU.ShouldBe(expectedItem.SKU),
+            () => actualItem.Quantity.ShouldBe(expectedItem.Quantity),
+            () => actualItem.UnitType.ShouldBe(expectedItem.UnitType),
+            () => actualItem.PricePerUnit.ShouldBe(expectedItem.PricePerUnit),
+            () => actualItem.Multiplier.ShouldBe(expectedItem.Multiplier),
+            () => actualItem.Owner.ShouldBe(expectedItem.Owner),
+            () => actualItem.RepositorySlug.ShouldBe(expectedItem.RepositorySlug),
+            () => actualItem.Username.ShouldBe(expectedItem.Username),
+            () => actualItem.ActionsWorkflow.ShouldBe(expectedItem.ActionsWorkflow),
+            () => actualItem.Notes.ShouldBe(expectedItem.Notes)
+        );
+        
+    }
     
     [Theory]
     [InlineData("Packages", Product.Packages)]
     [InlineData("Actions", Product.Actions)]
     [InlineData("Copilot", Product.Copilot)]
     [InlineData("Shared Storage", Product.SharedStorage)]
+    [InlineData("Codespaces - Linux", Product.CodespacesLinux)]
     [InlineData("zzzz", Product.Unknown)]
     public void ProductType_Converted_As_Expected(string productType, Product expectedProduct)
     {

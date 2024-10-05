@@ -25,6 +25,7 @@ public class MeteredBillingReportItemParser : IReportItemParser<MeteredBillingRe
         static Product SafeParse(string value)
         {
             var sanitizedValue = value.Replace(" ", string.Empty);
+            sanitizedValue = sanitizedValue.Replace("-", string.Empty);
             return Enum.TryParse<Product>(sanitizedValue, out var product) ? product : Product.Unknown;
         }
     }

@@ -1,6 +1,7 @@
 ﻿using ActionsUsageAnalyser.Domain.MeteredBillingReport;
 using ActionsUsageAnalyzer.Infrastructure;
-using Microsoft.Extensions.Logging.Abstractions;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Console;
 
 var inputDirectory = Environment.GetEnvironmentVariable("INPUT_DIRECTORY") ?? @"/input/";
 var outputDirectory = Environment.GetEnvironmentVariable("OUTPUT_DIRECTORY") ?? @"/output/";
@@ -31,9 +32,11 @@ var outputFilePath = args.Length > inputIndex + 2 ? Path.Combine(outputDirectory
 
 Console.WriteLine($"Report {dataFileName}");
 
+var loggerFactory = LoggerFactory.Create(builder => builder.AddConsole());
+
 var reportAnalyzer = new EnterpriseActionsUsageConsumptionReportAnalyzer(new MeteredBillingReportReader(new FileContentStreamer(), new MeteredBillingReportItemParser()), 
     new OutputProvider(outputFilePath),
-    NullLogger<EnterpriseActionsUsageConsumptionReportAnalyzer>.Instance
+    loggerFactory.CreateLogger<EnterpriseActionsUsageConsumptionReportAnalyzer>()
     );
 
 await reportAnalyzer.AnalyzeAsync(dataFilePath);

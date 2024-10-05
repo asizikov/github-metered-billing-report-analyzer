@@ -6,4 +6,5 @@ public class Enterprise
     public Dictionary<string, CopilotConsumption> CopilotConsumptionPerOwner { get; set; } = new();
     public Dictionary<string, StorageConsumption> StorageConsumptionPerOwner { get; set; } = new();
     public Dictionary<string, PackagesConsumption> PackagesConsumptionPerOwner { get; set; } = new();
+    public Dictionary<string, CodespacesConsumption> CodespacesConsumptionPerOwner { get; set; } = new();
 }
