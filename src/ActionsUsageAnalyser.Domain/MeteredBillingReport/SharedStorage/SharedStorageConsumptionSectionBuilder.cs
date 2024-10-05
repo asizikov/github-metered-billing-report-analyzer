@@ -1,8 +1,8 @@
 namespace ActionsUsageAnalyser.Domain.MeteredBillingReport.SharedStorage;
 
-public static class SharedStorageConsumptionSectionBuilder
+public class SharedStorageConsumptionSectionBuilder : IConsumptionReportSectionBuilder
 {
-    public static decimal Build(IOutputWriter outputWriter, Enterprise enterprise)
+    public decimal Build(IOutputWriter outputWriter, Enterprise enterprise)
     {
         outputWriter.WriteTitle(2, "Shared storage consumption per organization");
 

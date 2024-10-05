@@ -17,13 +17,13 @@ public class EnterpriseActionsUsageConsumptionReportAnalyzer(
     private readonly IOutputProvider outputProvider = outputProvider ?? throw new ArgumentNullException(nameof(outputProvider));
     private readonly ILogger<EnterpriseActionsUsageConsumptionReportAnalyzer> logger = logger ?? throw new ArgumentNullException(nameof(logger));
 
-    private readonly Dictionary<Product, IReportEntryDataProcessor> dataProcessors = new()
+    private readonly Dictionary<Product, (IReportEntryDataProcessor dataProcessor, IConsumptionReportSectionBuilder reportSectionBuilder)> dataProcessors = new()
     {
-        { Product.Actions, new ActionsEntryDataProcessor() },
-        { Product.Copilot, new CopilotEntryDataProcessor() },
-        { Product.SharedStorage, new SharedStorageEntryDataProcessor() },
-        { Product.Packages, new PackagesEntryDataProcessor() },
-        { Product.CodespacesLinux, new CodespacesEntryDataProcessor() },
+        { Product.Actions, (new ActionsEntryDataProcessor(), new ActionsConsumptionReportSectionBuilder()) },
+        { Product.Copilot, (new CopilotEntryDataProcessor(), new CopilotConsumptionReportSectionBuilder()) },
+        { Product.SharedStorage, (new SharedStorageEntryDataProcessor(), new SharedStorageConsumptionSectionBuilder()) },
+        { Product.Packages, (new PackagesEntryDataProcessor(), new PackagesConsumptionReportSectionBuilder()) },
+        { Product.CodespacesLinux, (new CodespacesEntryDataProcessor(), new CodespacesConsumptionReportSectionBuilder()) },
     };
 
     public async Task AnalyzeAsync(string dataFilePath)
@@ -34,13 +34,16 @@ public class EnterpriseActionsUsageConsumptionReportAnalyzer(
             var pricePerSku = new Dictionary<string, (Product product, decimal multiplier, string unit, decimal price)>();
             var enterprise = new Enterprise();
 
+            var seenProducts = new HashSet<Product>();
             await foreach (var reportItem in reportReader.ReadFromSourceAsync(dataFilePath))
             {
                 if (!dataProcessors.TryGetValue(reportItem.Product, out var dataProcessor)) continue;
+                
+                seenProducts.Add(reportItem.Product);
                 start = reportItem.Date < start ? reportItem.Date : start;
                 end = reportItem.Date > end ? reportItem.Date : end;
 
-                dataProcessor.ProcessForEnterprise(enterprise, reportItem);
+                dataProcessor.dataProcessor.ProcessForEnterprise(enterprise, reportItem);
                 pricePerSku.TryAdd(reportItem.SKU, (reportItem.Product, reportItem.Multiplier, reportItem.UnitType, reportItem.PricePerUnit));
             }
 
@@ -62,23 +65,25 @@ public class EnterpriseActionsUsageConsumptionReportAnalyzer(
 
             outputWriter.WriteLine($"Total number of organizations: {enterprise.ActionsConsumptionPerOwner.Count}");
 
-            var actionsCost = ActionsConsumptionReportSectionBuilder.Build(outputWriter, enterprise, pricePerSku);
-            var storageCost = SharedStorageConsumptionSectionBuilder.Build(outputWriter, enterprise);
-            var packagesCost = PackagesConsumptionReportSectionBuilder.Build(outputWriter, enterprise);
-            var copilotCost = CopilotConsumptionReportSectionBuilder.Build(outputWriter, enterprise);
-            var codespacesCost = CodespacesConsumptionReportSectionBuilder.Build(outputWriter, enterprise);
+            var summary = new List<(string product, decimal cost)>();
+            foreach (var seenProduct in seenProducts)
+            {
+                if (!dataProcessors.TryGetValue(seenProduct, out var dataProcessor)) continue;
+                var productCost = dataProcessor.reportSectionBuilder.Build(outputWriter, enterprise);
+                summary.Add((seenProduct.ToString(), productCost));
+            }
 
+            
             outputWriter.WriteTitle(1, "Summary for this enterprise");
 
             outputWriter.BeginTable("Metered Cost", "Total price");
-            outputWriter.WriteTableRow("Actions", actionsCost.ToUsString());
-            outputWriter.WriteTableRow("Shared storage", storageCost.ToUsString());
-            outputWriter.WriteTableRow("Packages", packagesCost.ToUsString());
-            outputWriter.WriteTableRow("Copilot", copilotCost.ToUsString());
-            outputWriter.WriteTableRow("Codespaces", codespacesCost.ToUsString());
+            foreach (var summaryItem in summary)
+            {
+                outputWriter.WriteTableRow(summaryItem.product, summaryItem.cost.ToUsString());
+            }
             outputWriter.EndTable();
 
-            outputWriter.WriteLine("Grand total: " + (actionsCost + packagesCost + storageCost + copilotCost).ToUsString());
+            outputWriter.WriteLine("Grand total: " + summary.Sum(x => x.cost).ToUsString());
         }
         catch (Exception e)
         {

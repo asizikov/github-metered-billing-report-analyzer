@@ -1,30 +1,32 @@
+using ActionsUsageAnalyser.Domain.MeteredBillingReport.SharedStorage;
+
 namespace ActionsUsageAnalyser.Domain.MeteredBillingReport.Actions;
 
-public static class ActionsConsumptionReportSectionBuilder
+public class ActionsConsumptionReportSectionBuilder: IConsumptionReportSectionBuilder
 {
-    public static decimal Build(IOutputWriter outputWriter, Enterprise enterprise, Dictionary<string, (Product product, decimal multiplier, string unit, decimal price)> pricePerSku)
+    public decimal Build(IOutputWriter outputWriter, Enterprise enterprise)
     {
         outputWriter.WriteTitle(2, "Actions consumption per organization");
 
         var totalConsumptionForEnterprise = 0M;
         foreach (var owner in enterprise.ActionsConsumptionPerOwner)
         {
-            var totalPriceForThisOwner = 0M;
+            var totalCostForThisOwner = 0M;
             outputWriter.WriteTitle(3, owner.Key);
             outputWriter.WriteTitle(4, "Consumption per SKU");
 
             outputWriter.BeginTable("SKU", "Minutes", "Total cost");
-            foreach (var sku in owner.Value.MinutesPerSku)
+            foreach (var sku in owner.Value.ConsumptionPerSku)
             {
-                var costForThisSku = sku.Value * pricePerSku[sku.Key].price;
-                outputWriter.WriteTableRow(sku.Key, sku.Value.ToString("N1"), costForThisSku.ToUsString());
-                totalPriceForThisOwner += costForThisSku;
+                var costForThisSku = sku.Value.cost;
+                outputWriter.WriteTableRow(sku.Key, sku.Value.cost.ToString("N1"), costForThisSku.ToUsString());
+                totalCostForThisOwner += costForThisSku;
             }
 
             outputWriter.EndTable();
 
-            outputWriter.WriteLine($"Total cost for this organization: {totalPriceForThisOwner.ToUsString()}");
-            totalConsumptionForEnterprise += totalPriceForThisOwner;
+            outputWriter.WriteLine($"Total cost for this organization: {totalCostForThisOwner.ToUsString()}");
+            totalConsumptionForEnterprise += totalCostForThisOwner;
 
             outputWriter.WriteTitle(4, "Top 3 repositories by consumption");
             outputWriter.BeginTable("Repository", "Total cost");

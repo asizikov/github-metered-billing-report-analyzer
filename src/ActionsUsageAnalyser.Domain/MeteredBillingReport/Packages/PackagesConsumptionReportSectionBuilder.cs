@@ -1,8 +1,10 @@
+using ActionsUsageAnalyser.Domain.MeteredBillingReport.SharedStorage;
+
 namespace ActionsUsageAnalyser.Domain.MeteredBillingReport.Packages;
 
-public static class PackagesConsumptionReportSectionBuilder
+public class PackagesConsumptionReportSectionBuilder: IConsumptionReportSectionBuilder
 {
-    public static decimal Build(IOutputWriter outputWriter, Enterprise enterprise)
+    public decimal Build(IOutputWriter outputWriter, Enterprise enterprise)
     {
         outputWriter.WriteTitle(2, "Packages consumption per organization");
 

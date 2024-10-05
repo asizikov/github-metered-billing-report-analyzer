@@ -1,8 +1,10 @@
+using ActionsUsageAnalyser.Domain.MeteredBillingReport.SharedStorage;
+
 namespace ActionsUsageAnalyser.Domain.MeteredBillingReport.Codespaces;
 
-public static class CodespacesConsumptionReportSectionBuilder
+public class CodespacesConsumptionReportSectionBuilder: IConsumptionReportSectionBuilder
 {
-    public static decimal Build(IOutputWriter outputWriter, Enterprise enterprise)
+    public decimal Build(IOutputWriter outputWriter, Enterprise enterprise)
     {
         outputWriter.WriteTitle(2, "Codespaces consumption per organization");
 

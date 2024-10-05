@@ -1,8 +1,10 @@
+using ActionsUsageAnalyser.Domain.MeteredBillingReport.SharedStorage;
+
 namespace ActionsUsageAnalyser.Domain.MeteredBillingReport.Copilot;
 
-public static class CopilotConsumptionReportSectionBuilder
+public class CopilotConsumptionReportSectionBuilder: IConsumptionReportSectionBuilder
 {
-    public static decimal Build(IOutputWriter outputWriter, Enterprise enterprise)
+    public decimal Build(IOutputWriter outputWriter, Enterprise enterprise)
     {
         outputWriter.WriteTitle(2, "Copilot consumption per organization");
 
