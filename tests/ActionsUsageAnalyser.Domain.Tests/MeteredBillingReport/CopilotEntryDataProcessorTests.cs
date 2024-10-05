@@ -1,4 +1,5 @@
 using ActionsUsageAnalyser.Domain.MeteredBillingReport;
+using ActionsUsageAnalyser.Domain.MeteredBillingReport.Copilot;
 using Shouldly;
 
 namespace ActionsUsageAnalyser.Domain.Tests.MeteredBillingReport;

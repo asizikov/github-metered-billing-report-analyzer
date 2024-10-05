@@ -1,4 +1,4 @@
-namespace ActionsUsageAnalyser.Domain.MeteredBillingReport;
+namespace ActionsUsageAnalyser.Domain.MeteredBillingReport.Packages;
 
 public class PackagesEntryDataProcessor : IReportEntryDataProcessor
 {
@@ -8,7 +8,7 @@ public class PackagesEntryDataProcessor : IReportEntryDataProcessor
 
         enterprise.PackagesConsumptionPerOwner.TryAdd(item.Owner, new PackagesConsumption());
         enterprise.PackagesConsumptionPerOwner[item.Owner].AccumulatedCost += item.Quantity * item.PricePerUnit;
-        enterprise.PackagesConsumptionPerOwner[item.Owner].PricePerRepository.TryAdd(item.RepositorySlug, 0);
-        enterprise.PackagesConsumptionPerOwner[item.Owner].PricePerRepository[item.RepositorySlug] += item.Quantity * item.PricePerUnit;
+        enterprise.PackagesConsumptionPerOwner[item.Owner].CostPerRepository.TryAdd(item.RepositorySlug, 0);
+        enterprise.PackagesConsumptionPerOwner[item.Owner].CostPerRepository[item.RepositorySlug] += item.Quantity * item.PricePerUnit;
     }
 }

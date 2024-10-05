@@ -1,10 +1,11 @@
 
 ## Metered SKUs for this enterprise
 
-| SKU | Unit | Price per unit | Multiplier |
+Metered data for period: **2023-08-01** to **2023-08-01**
+| Product | SKU | Unit | Price per unit |
 | --- | --- | --- | --- |
-| Compute - UBUNTU | minute | $0.01 | 1,0 |
-| Compute - UBUNTU_4_CORE | minute | $0.02 | 1,0 |
+| Actions | Compute - UBUNTU | minute | $0.01 |
+| Actions | Compute - UBUNTU_4_CORE | minute | $0.02 |
 
 Total number of organizations: 4
 
@@ -16,16 +17,16 @@ Total number of organizations: 4
 
 #### Consumption per SKU
 
-| SKU | Minutes | Total price |
+| SKU | Minutes | Total cost |
 | --- | --- | --- |
-| Compute - UBUNTU | 5.058,0 | $40.46 |
-| Compute - UBUNTU_4_CORE | 25,0 | $0.40 |
+| Compute - UBUNTU | 5,058.0 | $40.46 |
+| Compute - UBUNTU_4_CORE | 25.0 | $0.40 |
 
 Total cost for this organization: $40.86
 
 #### Top 3 repositories by consumption
 
-| Repository | Total price |
+| Repository | Total cost |
 | --- | --- |
 | repo-604 | $39.92 |
 | repo-499 | $0.12 |
@@ -37,15 +38,15 @@ Total cost for this organization: $40.86
 
 #### Consumption per SKU
 
-| SKU | Minutes | Total price |
+| SKU | Minutes | Total cost |
 | --- | --- | --- |
-| Compute - UBUNTU | 148,0 | $1.18 |
+| Compute - UBUNTU | 148.0 | $1.18 |
 
 Total cost for this organization: $1.18
 
 #### Top 3 repositories by consumption
 
-| Repository | Total price |
+| Repository | Total cost |
 | --- | --- |
 | repo-714 | $1.18 |
 
@@ -55,15 +56,15 @@ Total cost for this organization: $1.18
 
 #### Consumption per SKU
 
-| SKU | Minutes | Total price |
+| SKU | Minutes | Total cost |
 | --- | --- | --- |
-| Compute - UBUNTU | 14,0 | $0.11 |
+| Compute - UBUNTU | 14.0 | $0.11 |
 
 Total cost for this organization: $0.11
 
 #### Top 3 repositories by consumption
 
-| Repository | Total price |
+| Repository | Total cost |
 | --- | --- |
 | repo-61 | $0.05 |
 | repo-52 | $0.03 |
@@ -75,28 +76,24 @@ Total cost for this organization: $0.11
 
 #### Consumption per SKU
 
-| SKU | Minutes | Total price |
+| SKU | Minutes | Total cost |
 | --- | --- | --- |
-| Compute - UBUNTU | 1,0 | $0.01 |
+| Compute - UBUNTU | 1.0 | $0.01 |
 
 Total cost for this organization: $0.01
 
 #### Top 3 repositories by consumption
 
-| Repository | Total price |
+| Repository | Total cost |
 | --- | --- |
 | repo-818 | $0.01 |
 
 Total consumption for the enterprise: $42.17
 
-## Shared storage consumption per organization
+# Summary for this enterprise
 
-Total storage consumption for the enterprise: $0.00
+| Metered Cost | Total price |
+| --- | --- |
+| Actions | $42.17 |
 
-## Copilot consumption per organization
-
-Total copilot consumption for the enterprise: $0.00
-
-## Packages consumption per organization
-
-Total packages consumption for the enterprise: $0.00
+Grand total: $42.17
