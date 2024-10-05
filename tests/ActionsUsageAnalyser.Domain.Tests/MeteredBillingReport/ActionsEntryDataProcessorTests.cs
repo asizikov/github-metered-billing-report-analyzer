@@ -1,4 +1,5 @@
 using ActionsUsageAnalyser.Domain.MeteredBillingReport;
+using ActionsUsageAnalyser.Domain.MeteredBillingReport.Actions;
 using Shouldly;
 
 namespace ActionsUsageAnalyser.Domain.Tests.MeteredBillingReport;
@@ -43,8 +44,8 @@ public class ActionsEntryDataProcessorTests
             () => enterprise.ActionsConsumptionPerOwner.ShouldContainKey(item.Owner),
             () => enterprise.ActionsConsumptionPerOwner[item.Owner].MinutesPerSku.ShouldContainKey(item.SKU),
             () => enterprise.ActionsConsumptionPerOwner[item.Owner].MinutesPerSku[item.SKU].ShouldBe(item.Quantity),
-            () => enterprise.ActionsConsumptionPerOwner[item.Owner].PricePerRepository.ShouldContainKey(item.RepositorySlug),
-            () => enterprise.ActionsConsumptionPerOwner[item.Owner].PricePerRepository[item.RepositorySlug].ShouldBe(item.Quantity * item.Multiplier * item.PricePerUnit)
+            () => enterprise.ActionsConsumptionPerOwner[item.Owner].CostPerRepository.ShouldContainKey(item.RepositorySlug),
+            () => enterprise.ActionsConsumptionPerOwner[item.Owner].CostPerRepository[item.RepositorySlug].ShouldBe(item.Quantity * item.Multiplier * item.PricePerUnit)
         );
     }
 
@@ -102,8 +103,8 @@ public class ActionsEntryDataProcessorTests
 
         foreach (var group in items.GroupBy(i => i.RepositorySlug))
         {
-            enterprise.ActionsConsumptionPerOwner["owner"].PricePerRepository.ShouldContainKey(group.Key);
-            enterprise.ActionsConsumptionPerOwner["owner"].PricePerRepository[group.Key].ShouldBe(group.Sum(i => i.Quantity * i.PricePerUnit));
+            enterprise.ActionsConsumptionPerOwner["owner"].CostPerRepository.ShouldContainKey(group.Key);
+            enterprise.ActionsConsumptionPerOwner["owner"].CostPerRepository[group.Key].ShouldBe(group.Sum(i => i.Quantity * i.PricePerUnit));
         }
     }
 }

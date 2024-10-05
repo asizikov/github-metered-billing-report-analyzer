@@ -1,4 +1,4 @@
-namespace ActionsUsageAnalyser.Domain.MeteredBillingReport;
+namespace ActionsUsageAnalyser.Domain.MeteredBillingReport.Actions;
 
 public class ActionsEntryDataProcessor : IReportEntryDataProcessor
 {
@@ -9,7 +9,7 @@ public class ActionsEntryDataProcessor : IReportEntryDataProcessor
         enterprise.ActionsConsumptionPerOwner.TryAdd(item.Owner, new ());
         enterprise.ActionsConsumptionPerOwner[item.Owner].MinutesPerSku.TryAdd(item.SKU, 0);
         enterprise.ActionsConsumptionPerOwner[item.Owner].MinutesPerSku[item.SKU] += item.Quantity;
-        enterprise.ActionsConsumptionPerOwner[item.Owner].PricePerRepository.TryAdd(item.RepositorySlug, 0);
-        enterprise.ActionsConsumptionPerOwner[item.Owner].PricePerRepository[item.RepositorySlug] += item.Quantity * item.PricePerUnit;
+        enterprise.ActionsConsumptionPerOwner[item.Owner].CostPerRepository.TryAdd(item.RepositorySlug, 0);
+        enterprise.ActionsConsumptionPerOwner[item.Owner].CostPerRepository[item.RepositorySlug] += item.Quantity * item.PricePerUnit;
     }
 }

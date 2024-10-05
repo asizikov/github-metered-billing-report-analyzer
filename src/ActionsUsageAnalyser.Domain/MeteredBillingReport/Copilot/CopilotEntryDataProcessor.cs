@@ -1,4 +1,4 @@
-namespace ActionsUsageAnalyser.Domain.MeteredBillingReport;
+namespace ActionsUsageAnalyser.Domain.MeteredBillingReport.Copilot;
 
 public class CopilotEntryDataProcessor : IReportEntryDataProcessor
 {
