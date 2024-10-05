@@ -46,19 +46,18 @@ jobs:
           context: .
           load: true
           tags: analyzer:test
-
-      - name: 🔬 Test image
+      - name: ▶️ Test run
         run: |
-          mkdir output
-          docker run --user $(id -u):$(id -g) -v $(pwd)/examples:/input -v $(pwd)/output:/output analyzer:test --input input.csv test.md
+            mkdir output
+            docker run --user $(id -u):$(id -g) -v $(pwd)/examples:/input -v $(pwd)/output:/output analyzer:test --input input.csv test.md
+      - name: 🔬 Compare test output to gold
+        run: |
           diff output/test.md examples/gold.md > diff.txt
-          status=$?
-          if [ $status -ne 0 ]; then
+          if [ -s diff.txt ]; then
             echo "Files are different" >> $GITHUB_STEP_SUMMARY 
             cat diff.txt >> $GITHUB_STEP_SUMMARY
             exit 1
           fi
-
       - name: 🐳 Push image
         uses: docker/build-push-action@v4
         if: github.ref == 'refs/heads/main'
