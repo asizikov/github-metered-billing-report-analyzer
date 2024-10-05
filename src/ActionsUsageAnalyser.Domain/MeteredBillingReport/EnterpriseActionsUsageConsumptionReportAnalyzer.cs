@@ -24,11 +24,16 @@ public class EnterpriseActionsUsageConsumptionReportAnalyzer(
     {
         try
         {
+            var (start, end) = (DateTime.MaxValue, DateTime.MinValue);
             var pricePerSku = new Dictionary<string, (decimal multiplier, string unit, decimal price)>();
             var enterprise = new Enterprise();
+            
             await foreach (var reportItem in reportReader.ReadFromSourceAsync(dataFilePath))
             {
                 if (!dataProcessors.TryGetValue(reportItem.Product, out var dataProcessor)) continue;
+                start = reportItem.Date < start ? reportItem.Date : start;
+                end = reportItem.Date > end ? reportItem.Date : end;
+                
                 dataProcessor.ProcessForEnterprise(enterprise, reportItem);
                 pricePerSku.TryAdd(reportItem.SKU, (reportItem.Multiplier, reportItem.UnitType, reportItem.PricePerUnit));
             }
@@ -36,6 +41,8 @@ public class EnterpriseActionsUsageConsumptionReportAnalyzer(
             using var outputWriter = outputProvider.GetOutputWriter();
 
             outputWriter.WriteTitle(2, "Metered SKUs for this enterprise");
+            
+            outputWriter.WriteLine($"Metered data for period: **{start:yyyy-MM-dd}** to **{end:yyyy-MM-dd}**");
 
             outputWriter.BeginTable("SKU","Unit", "Price per unit", "Multiplier");
             foreach (var sku in pricePerSku.OrderBy(kv => kv.Key))
