@@ -52,7 +52,7 @@ jobs:
             docker run --user $(id -u):$(id -g) -v $(pwd)/examples:/input -v $(pwd)/output:/output analyzer:test --input input.csv test.md
       - name: 🔬 Compare test output to gold
         run: |
-          diff output/test.md examples/gold.md > diff.txt
+          diff output/test.md examples/gold.md > diff.txt || true
           if [ -s diff.txt ]; then
             echo "Files are different" >> $GITHUB_STEP_SUMMARY 
             cat diff.txt >> $GITHUB_STEP_SUMMARY
