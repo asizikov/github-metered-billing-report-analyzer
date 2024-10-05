@@ -54,11 +54,14 @@ jobs:
         run: |
           diff output/test.md examples/gold.md > diff.txt || true
           if [ -s diff.txt ]; then
-            echo "Files are different" >> $GITHUB_STEP_SUMMARY 
-            echo "==" >> $GITHUB_STEP_SUMMARY
+            echo "## ⚠️ Files are different" >> $GITHUB_STEP_SUMMARY 
             echo "diff file:" >> $GITHUB_STEP_SUMMARY
-            echo "```" >> $GITHUB_STEP_SUMMARY          
-            cat diff.txt >> $GITHUB_STEP_SUMMARY
+            echo "```txt" >> $GITHUB_STEP_SUMMARY
+            if [ -f diff.txt ]; then
+              cat diff.txt >> $GITHUB_STEP_SUMMARY
+            else
+              echo "diff.txt not found" >> $GITHUB_STEP_SUMMARY
+            fi            
             echo "```" >> $GITHUB_STEP_SUMMARY
             exit 1
           fi
