@@ -1,3 +1,4 @@
+using System.Globalization;
 using ActionsUsageAnalyser.Domain.MeteredBillingReport.SharedStorage;
 
 namespace ActionsUsageAnalyser.Domain.MeteredBillingReport.Actions;
@@ -19,7 +20,7 @@ public class ActionsConsumptionReportSectionBuilder: IConsumptionReportSectionBu
             foreach (var sku in owner.Value.ConsumptionPerSku)
             {
                 var costForThisSku = sku.Value.cost;
-                outputWriter.WriteTableRow(sku.Key, sku.Value.cost.ToString("N1"), costForThisSku.ToUsString());
+                outputWriter.WriteTableRow(sku.Key, sku.Value.minutes.ToString("N1", CultureInfo.CreateSpecificCulture("en-US")), costForThisSku.ToUsString());
                 totalCostForThisOwner += costForThisSku;
             }
 

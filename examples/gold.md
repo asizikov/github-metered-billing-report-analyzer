@@ -19,8 +19,8 @@ Total number of organizations: 4
 
 | SKU | Minutes | Total cost |
 | --- | --- | --- |
-| Compute - UBUNTU | 40,5 | $40.46 |
-| Compute - UBUNTU_4_CORE | 0,4 | $0.40 |
+| Compute - UBUNTU | 5,058.0 | $40.46 |
+| Compute - UBUNTU_4_CORE | 25.0 | $0.40 |
 
 Total cost for this organization: $40.86
 
@@ -40,7 +40,7 @@ Total cost for this organization: $40.86
 
 | SKU | Minutes | Total cost |
 | --- | --- | --- |
-| Compute - UBUNTU | 1,2 | $1.18 |
+| Compute - UBUNTU | 148.0 | $1.18 |
 
 Total cost for this organization: $1.18
 
@@ -58,7 +58,7 @@ Total cost for this organization: $1.18
 
 | SKU | Minutes | Total cost |
 | --- | --- | --- |
-| Compute - UBUNTU | 0,1 | $0.11 |
+| Compute - UBUNTU | 14.0 | $0.11 |
 
 Total cost for this organization: $0.11
 
@@ -78,7 +78,7 @@ Total cost for this organization: $0.11
 
 | SKU | Minutes | Total cost |
 | --- | --- | --- |
-| Compute - UBUNTU | 0,0 | $0.01 |
+| Compute - UBUNTU | 1.0 | $0.01 |
 
 Total cost for this organization: $0.01
 
