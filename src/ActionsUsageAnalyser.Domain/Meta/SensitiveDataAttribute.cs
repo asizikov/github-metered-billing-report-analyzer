@@ -1,12 +1,7 @@
 namespace ActionsUsageAnalyser.Domain.Meta;
 
 [AttributeUsage(AttributeTargets.Property)]
-public class SensitiveDataAttribute : Attribute
+public class SensitiveDataAttribute(DataType dataType) : Attribute
 {
-    public SensitiveDataAttribute(DataType dataType)
-    {
-        DataType = dataType;
-    }
-
-    public DataType DataType { get; }
+    public DataType DataType { get; } = dataType;
 }

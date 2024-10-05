@@ -27,7 +27,7 @@ public class ConsoleOutputWriter : IOutputWriter
     public void BeginTable(params string[] headers)
     {
         Console.WriteLine();
-        tableRows = new() { headers };
+        tableRows = [headers];
     }
 
     public void WriteTableRow(params string[] columns)

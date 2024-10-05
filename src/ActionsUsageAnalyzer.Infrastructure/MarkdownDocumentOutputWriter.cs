@@ -2,14 +2,9 @@ using ActionsUsageAnalyser.Domain;
 
 namespace ActionsUsageAnalyzer.Infrastructure;
 
-public class MarkdownDocumentOutputWriter : IOutputWriter
+public class MarkdownDocumentOutputWriter(string filePath) : IOutputWriter
 {
-    private readonly TextWriter writer;
-
-    public MarkdownDocumentOutputWriter(string filePath)
-    {
-        writer = File.CreateText(filePath);
-    }
+    private readonly TextWriter writer = File.CreateText(filePath);
 
     public void WriteLine(string line)
     {

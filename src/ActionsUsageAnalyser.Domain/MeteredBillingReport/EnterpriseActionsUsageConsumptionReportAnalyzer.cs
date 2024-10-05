@@ -1,13 +1,16 @@
-using System.Globalization;
 using Microsoft.Extensions.Logging;
 
 namespace ActionsUsageAnalyser.Domain.MeteredBillingReport;
 
-public class EnterpriseActionsUsageConsumptionReportAnalyzer : IReportAnalyzer
+public class EnterpriseActionsUsageConsumptionReportAnalyzer(
+    IReportReader<MeteredBillingReportItem> reportReader,
+    IOutputProvider outputProvider,
+    ILogger<EnterpriseActionsUsageConsumptionReportAnalyzer> logger)
+    : IReportAnalyzer
 {
-    private readonly IReportReader<MeteredBillingReportItem> reportReader;
-    private readonly IOutputProvider outputProvider;
-    private readonly ILogger<EnterpriseActionsUsageConsumptionReportAnalyzer> logger;
+    private readonly IReportReader<MeteredBillingReportItem> reportReader = reportReader ?? throw new ArgumentNullException(nameof(reportReader));
+    private readonly IOutputProvider outputProvider = outputProvider ?? throw new ArgumentNullException(nameof(outputProvider));
+    private readonly ILogger<EnterpriseActionsUsageConsumptionReportAnalyzer> logger = logger ?? throw new ArgumentNullException(nameof(logger));
     
     private readonly Dictionary<Product, IReportEntryDataProcessor> dataProcessors = new()
     {
@@ -16,13 +19,6 @@ public class EnterpriseActionsUsageConsumptionReportAnalyzer : IReportAnalyzer
         { Product.SharedStorage, new SharedStorageEntryDataProcessor()},
         { Product.Packages, new PackagesEntryDataProcessor()}
     };
-
-    public EnterpriseActionsUsageConsumptionReportAnalyzer(IReportReader<MeteredBillingReportItem> reportReader, IOutputProvider outputProvider, ILogger<EnterpriseActionsUsageConsumptionReportAnalyzer> logger)
-    {
-        this.reportReader = reportReader ?? throw new ArgumentNullException(nameof(reportReader));
-        this.outputProvider = outputProvider ?? throw new ArgumentNullException(nameof(outputProvider));
-        this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
-    }
 
     public async Task AnalyzeAsync(string dataFilePath)
     {
@@ -44,16 +40,27 @@ public class EnterpriseActionsUsageConsumptionReportAnalyzer : IReportAnalyzer
             outputWriter.BeginTable("SKU","Unit", "Price per unit", "Multiplier");
             foreach (var sku in pricePerSku.OrderBy(kv => kv.Key))
             {
-                outputWriter.WriteTableRow(sku.Key, sku.Value.unit, sku.Value.price.ToString("C", CultureInfo.GetCultureInfo("en-US")), sku.Value.multiplier.ToString("N1"));
+                outputWriter.WriteTableRow(sku.Key, sku.Value.unit, sku.Value.price.ToUsString(), sku.Value.multiplier.ToString("N1"));
             }
             outputWriter.EndTable();
 
             outputWriter.WriteLine($"Total number of organizations: {enterprise.ActionsConsumptionPerOwner.Count}");
 
-            BuildActionsConsumptionSection(outputWriter, enterprise, pricePerSku);
-            BuildSharedStorageConsumptionSecction(outputWriter, enterprise);
-            BuildCopilotConsumptionSecction(outputWriter, enterprise);
-            BuildPackagesConsumptionSecction(outputWriter, enterprise);
+            var actionsCost = BuildActionsConsumptionSection(outputWriter, enterprise, pricePerSku);
+            var storageCost = BuildSharedStorageConsumptionSection(outputWriter, enterprise);
+            var packagesCost = BuildPackagesConsumptionSecction(outputWriter, enterprise);
+            var copilotCost =  BuildCopilotConsumptionSecction(outputWriter, enterprise);
+            
+            outputWriter.WriteTitle(2, "Summary for this enterprise");
+            
+            outputWriter.BeginTable("Metered Cost", "Total price");
+            outputWriter.WriteTableRow("Actions", actionsCost.ToUsString());
+            outputWriter.WriteTableRow("Shared storage", storageCost.ToUsString());
+            outputWriter.WriteTableRow("Packages", packagesCost.ToUsString());
+            outputWriter.WriteTableRow("Copilot", copilotCost.ToUsString());
+            outputWriter.EndTable();
+            
+            outputWriter.WriteLine("Grand total: " + (actionsCost + packagesCost + storageCost + copilotCost).ToUsString());
         }
         catch (Exception e)
         {
@@ -61,7 +68,7 @@ public class EnterpriseActionsUsageConsumptionReportAnalyzer : IReportAnalyzer
         }
     }
 
-    private static void BuildActionsConsumptionSection(IOutputWriter outputWriter, Enterprise enterprise, Dictionary<string, (decimal multiplier, string unit, decimal price)> pricePerSku)
+    private static decimal BuildActionsConsumptionSection(IOutputWriter outputWriter, Enterprise enterprise, Dictionary<string, (decimal multiplier, string unit, decimal price)> pricePerSku)
     {
         outputWriter.WriteTitle(2, "Actions consumption per organization");
 
@@ -76,44 +83,54 @@ public class EnterpriseActionsUsageConsumptionReportAnalyzer : IReportAnalyzer
             foreach (var sku in owner.Value.MinutesPerSku)
             {
                 var priceForThisSku = sku.Value * pricePerSku[sku.Key].price;
-                outputWriter.WriteTableRow(sku.Key, sku.Value.ToString("N1"), priceForThisSku.ToString("C", CultureInfo.GetCultureInfo("en-US")));
+                outputWriter.WriteTableRow(sku.Key, sku.Value.ToString("N1"), priceForThisSku.ToUsString());
                 totalPriceForThisOwner += priceForThisSku;
             }
             outputWriter.EndTable();
 
 
-            outputWriter.WriteLine($"Total cost for this organization: {totalPriceForThisOwner.ToString("C", CultureInfo.GetCultureInfo("en-US"))}");
+            outputWriter.WriteLine($"Total cost for this organization: {totalPriceForThisOwner.ToUsString()}");
             totalConsumptionForEnterprise += totalPriceForThisOwner;
 
             outputWriter.WriteTitle(4, "Top 3 repositories by consumption");
             outputWriter.BeginTable("Repository", "Total price");
             foreach (var repository in owner.Value.PricePerRepository.OrderByDescending(x => x.Value).Take(3))
             {
-                outputWriter.WriteTableRow(repository.Key, repository.Value.ToString("C", CultureInfo.GetCultureInfo("en-US")));
+                outputWriter.WriteTableRow(repository.Key, repository.Value.ToUsString());
             }
             outputWriter.EndTable();
         }
 
-        outputWriter.WriteLine($"Total consumption for the enterprise: {totalConsumptionForEnterprise.ToString("C", CultureInfo.GetCultureInfo("en-US"))}");
+        outputWriter.WriteLine($"Total consumption for the enterprise: {totalConsumptionForEnterprise.ToUsString()}");
+        return totalConsumptionForEnterprise;
     }
 
-    private static void BuildSharedStorageConsumptionSecction(IOutputWriter outputWriter, Enterprise enterprise)
+    private static decimal BuildSharedStorageConsumptionSection(IOutputWriter outputWriter, Enterprise enterprise)
     {
         outputWriter.WriteTitle(2, "Shared storage consumption per organization");
             
         var totalStorageConsumptionForEnterprise = 0M;
         foreach (var owner in enterprise.StorageConsumptionPerOwner)
         {
-            var totalStoragePriceForThisOwner = owner.Value.AccumulatedPrise;
+            var totalStoragePriceForThisOwner = owner.Value.AccumulatedPrice;
             outputWriter.WriteTitle(3, owner.Key);
-                
-            outputWriter.WriteLine($"Total storage cost for this organization: {totalStoragePriceForThisOwner.ToString("C", CultureInfo.GetCultureInfo("en-US"))}");
+            
+            outputWriter.WriteTitle(4, "Top 3 repositories by storage cost");
+            outputWriter.BeginTable("Repository", "Total price");
+            foreach (var repository in owner.Value.PricePerRepository.OrderByDescending(x => x.Value).Take(3))
+            {
+                outputWriter.WriteTableRow(repository.Key, repository.Value.ToUsString());
+            }
+            outputWriter.EndTable();
+            
+            outputWriter.WriteLine($"Total storage cost for this organization: {totalStoragePriceForThisOwner.ToUsString()}");
             totalStorageConsumptionForEnterprise += totalStoragePriceForThisOwner;
         }
-        outputWriter.WriteLine($"Total storage consumption for the enterprise: {totalStorageConsumptionForEnterprise.ToString("C", CultureInfo.GetCultureInfo("en-US"))}");
+        outputWriter.WriteLine($"Total storage consumption for the enterprise: {totalStorageConsumptionForEnterprise.ToUsString()}");
+        return totalStorageConsumptionForEnterprise;
     }
 
-    private static void BuildCopilotConsumptionSecction(IOutputWriter outputWriter, Enterprise enterprise)
+    private static decimal BuildCopilotConsumptionSecction(IOutputWriter outputWriter, Enterprise enterprise)
     {
         outputWriter.WriteTitle(2, "Copilot consumption per organization");
             
@@ -123,13 +140,14 @@ public class EnterpriseActionsUsageConsumptionReportAnalyzer : IReportAnalyzer
             var totalCopilotPriceForThisOwner = owner.Value.AccumulatedCost;
             outputWriter.WriteTitle(3, owner.Key);
                 
-            outputWriter.WriteLine($"Total copilot cost for this organization: {totalCopilotPriceForThisOwner.ToString("C", CultureInfo.GetCultureInfo("en-US"))}");
+            outputWriter.WriteLine($"Total copilot cost for this organization: {totalCopilotPriceForThisOwner.ToUsString()}");
             totalCopilotConsumptionForEnterprise += totalCopilotPriceForThisOwner;
         }
-        outputWriter.WriteLine($"Total copilot consumption for the enterprise: {totalCopilotConsumptionForEnterprise.ToString("C", CultureInfo.GetCultureInfo("en-US"))}");
+        outputWriter.WriteLine($"Total copilot consumption for the enterprise: {totalCopilotConsumptionForEnterprise.ToUsString()}");
+        return totalCopilotConsumptionForEnterprise;
     }
 
-    private static void BuildPackagesConsumptionSecction(IOutputWriter outputWriter, Enterprise enterprise)
+    private static decimal BuildPackagesConsumptionSecction(IOutputWriter outputWriter, Enterprise enterprise)
     {
         outputWriter.WriteTitle(2, "Packages consumption per organization");
             
@@ -145,13 +163,14 @@ public class EnterpriseActionsUsageConsumptionReportAnalyzer : IReportAnalyzer
             outputWriter.BeginTable("Source", "Total price");
             foreach (var repository in owner.Value.PricePerRepository.OrderByDescending(x => x.Value).Take(3))
             {
-                outputWriter.WriteTableRow(repository.Key, repository.Value.ToString("C", CultureInfo.GetCultureInfo("en-US")));
+                outputWriter.WriteTableRow(repository.Key, repository.Value.ToUsString());
             }
             outputWriter.EndTable();
                 
-            outputWriter.WriteLine($"Total packages cost for this organization: {totalPackagesPriceForThisOwner.ToString("C", CultureInfo.GetCultureInfo("en-US"))}");
+            outputWriter.WriteLine($"Total packages cost for this organization: {totalPackagesPriceForThisOwner.ToUsString()}");
             totalPackagesConsumptionForEnterprise += totalPackagesPriceForThisOwner;
         }
-        outputWriter.WriteLine($"Total packages consumption for the enterprise: {totalPackagesConsumptionForEnterprise.ToString("C", CultureInfo.GetCultureInfo("en-US"))}");
+        outputWriter.WriteLine($"Total packages consumption for the enterprise: {totalPackagesConsumptionForEnterprise.ToUsString()}");
+        return totalPackagesConsumptionForEnterprise;
     }
 }

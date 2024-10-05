@@ -6,7 +6,7 @@ public class ActionsEntryDataProcessor : IReportEntryDataProcessor
     {
         if (item.Product is not Product.Actions) return;
 
-        enterprise.ActionsConsumptionPerOwner.TryAdd(item.Owner, new ActionsConsumption());
+        enterprise.ActionsConsumptionPerOwner.TryAdd(item.Owner, new ());
         enterprise.ActionsConsumptionPerOwner[item.Owner].MinutesPerSku.TryAdd(item.SKU, 0);
         enterprise.ActionsConsumptionPerOwner[item.Owner].MinutesPerSku[item.SKU] += item.Quantity;
         enterprise.ActionsConsumptionPerOwner[item.Owner].PricePerRepository.TryAdd(item.RepositorySlug, 0);

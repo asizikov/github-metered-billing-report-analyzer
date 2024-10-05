@@ -13,6 +13,8 @@ public class SharedStorageEntryDataProcessor: IReportEntryDataProcessor
         enterprise.StorageConsumptionPerOwner.TryAdd(owner, new());
 
         var storageConsumption = enterprise.StorageConsumptionPerOwner[owner];
-        storageConsumption.AccumulatedPrise += price;
+        storageConsumption.AccumulatedPrice += price;
+        storageConsumption.PricePerRepository.TryAdd(item.RepositorySlug, 0);
+        storageConsumption.PricePerRepository[item.RepositorySlug] += price;
     }
 }

@@ -2,15 +2,8 @@ using ActionsUsageAnalyser.Domain;
 
 namespace ActionsUsageAnalyzer.Infrastructure;
 
-public class OutputProvider : IOutputProvider
+public class OutputProvider(string? filePath) : IOutputProvider
 {
-    private readonly string? filePath;
-
-    public OutputProvider(string? filePath)
-    {
-        this.filePath = filePath;
-    }
-    
     public IOutputWriter GetOutputWriter()
     {
         if (string.IsNullOrEmpty(filePath))
