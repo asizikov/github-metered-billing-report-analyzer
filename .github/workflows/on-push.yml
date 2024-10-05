@@ -54,8 +54,8 @@ jobs:
           diff output/test.md examples/gold.md > diff.txt
           status=$?
           if [ $status -ne 0 ]; then
-            echo "Files are different"
-            cat diff.txt
+            echo "Files are different" >> $GITHUB_STEP_SUMMARY 
+            cat diff.txt >> $GITHUB_STEP_SUMMARY
             exit 1
           fi
 
