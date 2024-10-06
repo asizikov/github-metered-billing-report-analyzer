@@ -26,19 +26,16 @@ await foreach(var reportItem in reader.ReadFromSourceAsync(filePath))
 {
     ProcessReportItem(reportItem);
     
-    await writer.WriteLineAsync($"{reportItem.Date:yyyy-MM-dd},{reportItem.Product},{reportItem.SKU},{reportItem.Quantity},{reportItem.UnitType},{reportItem.PricePerUnit.ToString(CultureInfo.InvariantCulture)},{reportItem.Multiplier.ToString(CultureInfo.InvariantCulture)},{reportItem.Owner},{reportItem.RepositorySlug},{reportItem.Username},{reportItem.ActionsWorkflow},{reportItem.Notes}");
+    await writer.WriteLineAsync($"{reportItem.Date:yyyy-MM-dd},{reportItem.Product},{reportItem.SKU},{reportItem.Quantity.ToString(CultureInfo.InvariantCulture)},{reportItem.UnitType},{reportItem.PricePerUnit.ToString(CultureInfo.InvariantCulture)},{reportItem.Multiplier.ToString(CultureInfo.InvariantCulture)},{reportItem.Owner},{reportItem.RepositorySlug},{reportItem.Username},{reportItem.ActionsWorkflow},{reportItem.Notes}");
 
     void ProcessReportItem(MeteredBillingReportItem item)
     {
-        // enumerate all properties and find those with SensitiveDataAttribute
         var sensitiveProperties = typeof(MeteredBillingReportItem).GetProperties()
-            .Where(p => p.GetCustomAttributes(typeof(SensitiveDataAttribute), true).Any())
+            .Where(p => p.GetCustomAttributes(typeof(SensitiveDataAttribute), true).Length != 0)
             .ToList();
         
-        // enumerate all sensitive properties and replace their values with a hash
         foreach(var property in sensitiveProperties)
         {
-            // check value of DataType property of SensitiveDataAttribute
             var dataType = ((SensitiveDataAttribute)property.GetCustomAttributes(typeof(SensitiveDataAttribute), true).First()).DataType;
             var value = property.GetValue(item);
             if (value is string stringValue)

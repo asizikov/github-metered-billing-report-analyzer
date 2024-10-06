@@ -1,6 +1,6 @@
 # GitHub Actions Usage Analyzer
 
-This console application parses a GitHub Metered Billing report and provides a summary of the usage of GitHub Actions across your organizations. The summary includes the total number of minutes used, the number of minutes used per repository, and the total cost of GitHub Actions for each organization.
+This console application parses a GitHub Metered Billing report and provides a summary of the usage of GitHub Actions across your organizations. The summary detailes information about metered producs that has been consumed by your Enteprise with a breakdown of the consumption per organization.
 
 ## Installation
 
@@ -38,6 +38,14 @@ The application will parse the report and provide a summary of the usage of GitH
 docker run -v $(pwd)/examples:/input -v $(pwd)/output:/output analyzer --input input.csv  gold.md
 ```
 
+## Using the latest release
+
+To use the latest release, follow these steps:
+
+```bash
+docker run -v $(pwd)/examples:/input -v $(pwd)/output:/output ghcr.io/asizikov/github-metered-billing-report-analyzer:main --input input.csv  output.md
+```
+
 ## Report output example
 
 <details>
@@ -45,181 +53,212 @@ docker run -v $(pwd)/examples:/input -v $(pwd)/output:/output analyzer --input i
 
 ```txt
 
-Actions SKUs for this enterprise
-================================
+## Metered SKUs for this enterprise
 
-SKU                      | Price per minute | Multiplier
------------------------- | ---------------- | ----------
-Compute - UBUNTU         | $0.01            | 1,0       
-Compute - UBUNTU_4_CORE  | $0.02            | 1,0       
-Compute - UBUNTU_16_CORE | $0.06            | 1,0       
-Compute - WINDOWS        | $0.02            | 2,0       
-Compute - UBUNTU_8_CORE  | $0.03            | 1,0       
-Compute - WINDOWS_8_CORE | $0.06            | 2,0       
-Compute - MACOS          | $0.08            | 10,0      
+Metered data for period: **2023-08-01** to **2023-08-26**
+| Product | SKU | Unit | Price per unit |
+| --- | --- | --- | --- |
+| Actions | Compute - UBUNTU | minute | $0.01 |
+| Actions | Compute - UBUNTU_4_CORE | minute | $0.02 |
+| Actions | Compute - WINDOWS | minute | $0.02 |
+| Actions | Compute - MACOS | minute | $0.08 |
+| Actions | Compute - MACOS_XLARGE | minute | $0.16 |
+| CodespacesLinux | Prebuild storage | gb-month | $0.07 |
+| CodespacesLinux | Storage | gb-month | $0.07 |
+| CodespacesLinux | Compute - 2 core | hour | $0.18 |
+| CodespacesLinux | Compute - 4 core | hour | $0.36 |
+| Copilot | Copilot Business | user-month | $19.00 |
+| Packages | Data Transfer | gb | $0.50 |
+| SharedStorage | Shared Storage | gb-day | $0.01 |
 
+Total number of organizations: 5
 
-Total number of organizations: 6
-
-Actions consumption per organization
-====================================
-
-owner-316
----------
-
-Consumption per SKU
--------------------
-
-SKU                      | Minutes   | Total price
------------------------- | --------- | -----------
-Compute - UBUNTU         | 361.196,0 | $2,889.57  
-Compute - UBUNTU_4_CORE  | 13.908,0  | $222.53    
-Compute - UBUNTU_16_CORE | 10,0      | $0.64      
-Compute - WINDOWS        | 21.672,0  | $693.50    
-Compute - UBUNTU_8_CORE  | 26.387,0  | $844.38    
-Compute - WINDOWS_8_CORE | 2.101,0   | $268.93    
-Compute - MACOS          | 5.541,0   | $4,432.80  
+## Actions consumption per organization
 
 
-Total cost for this organization: $9,352.35
-
-Top 3 repositories by consumption
----------------------------------
-
-Repository | Total price
----------- | -----------
-repo-76    | $1,674.18  
-repo-696   | $1,017.06  
-repo-782   | $851.37    
+### owner-316
 
 
-owner-879
----------
+#### Consumption per SKU
 
-Consumption per SKU
--------------------
+| SKU | Minutes | Total cost |
+| --- | --- | --- |
+| Compute - UBUNTU | 5,058.0 | $40.46 |
+| Compute - UBUNTU_4_CORE | 25.0 | $0.40 |
 
-SKU                     | Minutes   | Total price
------------------------ | --------- | -----------
-Compute - UBUNTU        | 148.831,0 | $1,190.65  
-Compute - UBUNTU_8_CORE | 183,0     | $5.86      
-Compute - MACOS         | 576,0     | $460.80    
+Total cost for this organization: $40.86
 
+#### Top 3 repositories by consumption
 
-Total cost for this organization: $1,657.30
-
-Top 3 repositories by consumption
----------------------------------
-
-Repository | Total price
----------- | -----------
-repo-93    | $473.65    
-repo-696   | $207.19    
-repo-670   | $196.22    
+| Repository | Total cost |
+| --- | --- |
+| repo-604 | $39.92 |
+| repo-499 | $0.12 |
+| repo-657 | $0.12 |
 
 
-owner-88
---------
-
-Consumption per SKU
--------------------
-
-SKU               | Minutes   | Total price
------------------ | --------- | -----------
-Compute - UBUNTU  | 143.706,0 | $1,149.65  
-Compute - WINDOWS | 11.198,0  | $358.34    
-Compute - MACOS   | 14.911,0  | $11,928.80 
+### owner-879
 
 
-Total cost for this organization: $13,436.78
+#### Consumption per SKU
 
-Top 3 repositories by consumption
----------------------------------
+| SKU | Minutes | Total cost |
+| --- | --- | --- |
+| Compute - UBUNTU | 148.0 | $1.18 |
 
-Repository | Total price
----------- | -----------
-repo-554   | $11,988.55 
-repo-376   | $271.70    
-repo-477   | $160.76    
+Total cost for this organization: $1.18
 
+#### Top 3 repositories by consumption
 
-owner-659
----------
-
-Consumption per SKU
--------------------
-
-SKU               | Minutes | Total price
------------------ | ------- | -----------
-Compute - UBUNTU  | 8.605,0 | $68.84     
-Compute - WINDOWS | 2.301,0 | $73.63     
-Compute - MACOS   | 234,0   | $187.20    
+| Repository | Total cost |
+| --- | --- |
+| repo-714 | $1.18 |
 
 
-Total cost for this organization: $329.67
-
-Top 3 repositories by consumption
----------------------------------
-
-Repository | Total price
----------- | -----------
-repo-102   | $141.07    
-repo-326   | $73.63     
-repo-140   | $52.61     
+### owner-88
 
 
-owner-182
----------
+#### Consumption per SKU
 
-Consumption per SKU
--------------------
+| SKU | Minutes | Total cost |
+| --- | --- | --- |
+| Compute - UBUNTU | 14.0 | $0.11 |
 
-SKU              | Minutes | Total price
----------------- | ------- | -----------
-Compute - UBUNTU | 832,0   | $6.66      
+Total cost for this organization: $0.11
 
+#### Top 3 repositories by consumption
 
-Total cost for this organization: $6.66
-
-Top 3 repositories by consumption
----------------------------------
-
-Repository | Total price
----------- | -----------
-repo-124   | $4.60      
-repo-401   | $1.02      
-repo-771   | $0.58      
+| Repository | Total cost |
+| --- | --- |
+| repo-61 | $0.05 |
+| repo-52 | $0.03 |
+| repo-983 | $0.02 |
 
 
-owner-303
----------
-
-Consumption per SKU
--------------------
-
-SKU                      | Minutes   | Total price
------------------------- | --------- | -----------
-Compute - UBUNTU         | 545.347,0 | $4,362.78  
-Compute - UBUNTU_4_CORE  | 30.539,0  | $488.62    
-Compute - WINDOWS        | 34.900,0  | $1,116.80  
-Compute - UBUNTU_8_CORE  | 46.542,0  | $1,489.34  
-Compute - WINDOWS_8_CORE | 3.396,0   | $434.69    
-Compute - MACOS          | 5.546,0   | $4,436.80  
+### owner-659
 
 
-Total cost for this organization: $12,329.03
+#### Consumption per SKU
 
-Top 3 repositories by consumption
----------------------------------
+| SKU | Minutes | Total cost |
+| --- | --- | --- |
+| Compute - UBUNTU | 1.0 | $0.01 |
 
-Repository | Total price
----------- | -----------
-repo-76    | $2,862.45  
-repo-696   | $831.04    
-repo-93    | $644.03    
+Total cost for this organization: $0.01
+
+#### Top 3 repositories by consumption
+
+| Repository | Total cost |
+| --- | --- |
+| repo-818 | $0.01 |
 
 
-Total consumption for the enterprise: $37,111.80
+### owner-152
+
+
+#### Consumption per SKU
+
+| SKU | Minutes | Total cost |
+| --- | --- | --- |
+| Compute - WINDOWS | 19.0 | $0.30 |
+| Compute - MACOS | 481.0 | $38.48 |
+| Compute - MACOS_XLARGE | 11.0 | $1.76 |
+
+Total cost for this organization: $40.54
+
+#### Top 3 repositories by consumption
+
+| Repository | Total cost |
+| --- | --- |
+| repo-374 | $40.24 |
+| repo-682 | $0.30 |
+
+Total consumption for the enterprise: $82.71
+
+## Shared storage consumption per organization
+
+
+### owner-152
+
+
+#### Top 3 repositories by storage cost
+
+| Repository | Total price |
+| --- | --- |
+| repo-444 | $0.42 |
+| repo-348 | $0.04 |
+| repo-235 | $0.01 |
+
+Total storage cost for this organization: $0.50
+
+Total storage consumption for the enterprise: $0.50
+
+## Packages consumption per organization
+
+
+### owner-152
+
+
+#### Top 3 sources by packages cost
+
+| Source | Total cost |
+| --- | --- |
+| repo-863 | $0.16 |
+| repo-248 | $0.00 |
+| repo-111 | $0.00 |
+
+Total packages cost for this organization: $0.16
+
+Total packages consumption for the enterprise: $0.16
+
+## Codespaces consumption per organization
+
+
+### owner-152
+
+
+#### Consumption per SKU
+
+| SKU | Unit | Total cost |
+| --- | --- | --- |
+| Prebuild storage | gb-month | $0.39 |
+| Storage | gb-month | $0.07 |
+| Compute - 4 core | hour | $1.56 |
+| Compute - 2 core | hour | $0.25 |
+
+
+#### Top 3 repositories by codespaces cost
+
+| Repository | Total cost |
+| --- | --- |
+| repo-508 | $1.57 |
+| repo-180 | $0.26 |
+| repo-366 | $0.21 |
+
+Total codespaces cost for this organization: $2.27
+
+Total codespaces consumption for the enterprise: $2.27
+
+## Copilot consumption per organization
+
+
+### owner-152
+
+Total copilot cost for this organization: $519.74
+
+Total copilot consumption for the enterprise: $519.74
+
+# Summary for this enterprise
+
+| Metered Cost | Total price |
+| --- | --- |
+| Actions | $82.71 |
+| SharedStorage | $0.50 |
+| Packages | $0.16 |
+| CodespacesLinux | $2.27 |
+| Copilot | $519.74 |
+
+Grand total: $605.39
 
 ```
 
