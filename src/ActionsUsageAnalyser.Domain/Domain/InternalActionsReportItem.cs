@@ -2,11 +2,11 @@ namespace ActionsUsageAnalyzer.Domain;
 //Workflow;Repository;Repo Visibility;Runtime;Runner Type;User Count;Runtime Minutes;#of Repo;;;;;;;;;;;;;;;
 public class InternalActionsReportItem
 {
-    public string Workflow { get; set; }
-    public string Repository { get; set; }
-    public string RepoVisibility { get; set; }
-    public string Runtime { get; set; }
-    public string RunnerType { get; set; }
+    public string Workflow { get; set; } = string.Empty;
+    public string Repository { get; set; } = string.Empty;
+    public string RepoVisibility { get; set; } = string.Empty;
+    public string Runtime { get; set; } = string.Empty;
+    public string RunnerType { get; set; } = string.Empty;
     public int UserCount { get; set; }
     public int Minutes { get; set; }
     public double FractionOfRepo { get; set; }
