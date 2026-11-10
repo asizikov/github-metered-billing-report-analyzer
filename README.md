@@ -4,7 +4,7 @@ This console application parses a GitHub Metered Billing report and provides a s
 
 ## Installation
 
-To use this application, you need to have [.NET](https://dotnet.microsoft.com/download) and optinally Docker installed on your machine. 
+To use this application, you need [.NET 10](https://dotnet.microsoft.com/download) and optionally Docker installed on your machine.
 
 ## Usage
 
@@ -27,7 +27,7 @@ https://docs.github.com/en/enterprise-cloud@latest/billing/managing-billing-for-
 Once you have the report, you can run the application using the following command:
 
 ```bash
-docker run -b $(pwd)/path-to-your-report:/input -v $(pwd)/output:/output analyzer --input your-usage-report.csv
+docker run -v "$(pwd)/path-to-your-report:/input" -v "$(pwd)/output:/output" analyzer --input your-usage-report.csv
 ```
 
 The application will parse the report and provide a summary of the usage of GitHub Actions in your organization.
